@@ -1,1 +1,1 @@
-# notification-manager
+# Notification Manager

@@ -20,7 +20,7 @@ public class NotificationBroadcasterService : NotificationListenerService
 
         if (appName == null) return;
 
-        Intent intent = new Intent("intNotificationRecieved");
+        Intent intent = new Intent("intentNotificationRecieved");
         intent.PutExtra("title", title);
         intent.PutExtra("text", text);
         intent.PutExtra("timestamp", timestamp);

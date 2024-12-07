@@ -26,8 +26,10 @@ namespace NotificationManager
 
             builder.Services.AddSingleton<DatabaseContext>();
             builder.Services.AddSingleton<INotificationRepository, NotificationRepository>();
-            builder.Services.AddSingleton<NotificationViewModel>();
+            builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<NotificationsPage>();
+            builder.Services.AddSingleton<NotificationsPageViewModel>();
 
             return builder.Build();
         }

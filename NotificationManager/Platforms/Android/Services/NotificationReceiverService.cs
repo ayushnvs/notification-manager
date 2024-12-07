@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using NotificationManager.Entities.Models;
-using NotificationManager.Repository;
+using NotificationManager.Repository.Interfaces;
 
 namespace NotificationManager.Platforms.Android.Services;
 
@@ -9,11 +9,11 @@ namespace NotificationManager.Platforms.Android.Services;
 [IntentFilter(["intentNotificationRecieved"])]
 public class NotificationReceiverService : BroadcastReceiver
 {
-    private readonly NotificationRepository _notificationRepository;
+    private readonly INotificationRepository _notificationRepository;
 
-    public NotificationReceiverService(NotificationRepository notificationRepository)
+    public NotificationReceiverService()
     {
-        _notificationRepository = notificationRepository;
+        _notificationRepository = ServiceProvider.GetService<INotificationRepository>();
     }
 
     public async override void OnReceive(Context? context, Intent? intent)

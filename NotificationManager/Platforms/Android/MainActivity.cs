@@ -6,6 +6,7 @@ using Android.Provider;
 using Android.Text;
 using Android.Widget;
 using NotificationManager.Platforms.Android.Services;
+using NotificationManager.Repository.Interfaces;
 
 namespace NotificationManager;
 
@@ -18,6 +19,11 @@ public class MainActivity : MauiAppCompatActivity
 
         if (!IsNotificationListenerServiceEnabled()) RequestNotificationListenerPermission();
         else StartService(new Intent(this, typeof(NotificationBroadcasterService)));
+
+        NotificationReceiverService notificationReceiver = new NotificationReceiverService();
+        IntentFilter intent = new IntentFilter("intentNotificationRecieved");
+        Activity? currentActivity = Platform.CurrentActivity;
+        currentActivity?.RegisterReceiver(notificationReceiver, intent);
     }
 
     private void RequestNotificationListenerPermission()

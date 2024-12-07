@@ -1,6 +1,6 @@
 ﻿using NotificationManager.Entities.Models;
 
-namespace NotificationManager.Repository.IRepository;
+namespace NotificationManager.Repository.Interfaces;
 
 public interface INotificationRepository
 {

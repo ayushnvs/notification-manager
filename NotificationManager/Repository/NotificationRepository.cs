@@ -1,6 +1,6 @@
 ﻿using NotificationManager.Database;
 using NotificationManager.Entities.Models;
-using NotificationManager.Repository.IRepository;
+using NotificationManager.Repository.Interfaces;
 
 namespace NotificationManager.Repository;
 

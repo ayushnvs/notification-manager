@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Provider;
 using Android.Text;
 using Android.Widget;
+using NotificationManager.Platforms.Android.Services;
 
 namespace NotificationManager;
 
@@ -16,6 +17,7 @@ public class MainActivity : MauiAppCompatActivity
         base.OnCreate(savedInstanceState);
 
         if (!IsNotificationListenerServiceEnabled()) RequestNotificationListenerPermission();
+        else StartService(new Intent(this, typeof(NotificationBroadcasterService)));
     }
 
     private void RequestNotificationListenerPermission()
@@ -32,7 +34,7 @@ public class MainActivity : MauiAppCompatActivity
         {
             Toast.MakeText(this, "Permission denied. The app will not function properly.", ToastLength.Short)?.Show();
         });
-
+        builder.Show();
     }
 
     private bool IsNotificationListenerServiceEnabled()

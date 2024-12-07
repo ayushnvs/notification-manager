@@ -4,14 +4,23 @@ namespace NotificationManager.Views;
 
 public partial class MainPage : ContentPage
 {
-    private readonly NotificationViewModel _notificationViewModel;
+    private readonly MainPageViewModel _mainPageViewModel;
 
-    public MainPage(NotificationViewModel notificationViewModel)
+    public MainPage(MainPageViewModel mainPageViewModel)
     {
         InitializeComponent();
-        _notificationViewModel = notificationViewModel;
-        BindingContext = _notificationViewModel;
+        _mainPageViewModel = mainPageViewModel;
+        BindingContext = _mainPageViewModel;
     }
 
-    
+    private async void OnAppSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (listView.SelectedItem == null) return;
+        await Shell.Current.GoToAsync($"{nameof(NotificationsPage)}?appName={listView.SelectedItem.ToString()}");
+    }
+
+    private void OnAppTapped(object sender, ItemTappedEventArgs e)
+    {
+        listView.SelectedItem = null;
+    }
 }

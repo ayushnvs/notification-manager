@@ -4,18 +4,33 @@
              x:Class="NotificationManager.Views.MainPage"
              xmlns:local="clr-namespace:NotificationManager.ViewModel">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-            
+    <RefreshView x:Name="NotisRefreshView"
+            IsRefreshing="{Binding IsRefreshing}"
+            Command="{Binding RefreshCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="0,0" Spacing="100">
 
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me" 
-                SemanticProperties.Hint="Counts the number of times you click"
-                HorizontalOptions="Fill" />
-        </VerticalStackLayout>
-    </ScrollView>
+                <ListView x:Name="listView" 
+                          ItemsSource="{Binding AppNames}"
+                          RowHeight="75"
+                          SeparatorColor="Silver"
+                          ItemSelected="OnAppSelected"
+                          ItemTapped="OnAppTapped">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Label Text="{Binding .}"
+                                       FontSize="18"
+                                       VerticalOptions="Center"
+                                       Padding="10, 0"/>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+    
 
 </ContentPage>

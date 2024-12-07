@@ -11,16 +11,26 @@
             <VerticalStackLayout Padding="0,0" Spacing="100">
 
                 <ListView x:Name="listView" 
-                      ItemsSource="{Binding Notifications}"
-                      RowHeight="75"
-                      SeparatorColor="Silver">
+                          ItemsSource="{Binding Notifications}"
+                          RowHeight="75"
+                          SeparatorColor="Silver"
+                          SelectionMode="Single">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Label Text="{Binding NotificationTitle}"
-                                   FontSize="18"
-                                   VerticalOptions="Center"
-                                   Padding="10, 0"/>
+                                <Grid RowDefinitions="*" ColumnDefinitions="*, *">
+                                    <Label Text="{Binding NotificationTitle}"
+                                           Grid.Row="0"
+                                           Grid.Column="0"
+                                           FontSize="18"
+                                           VerticalOptions="Center"
+                                           Padding="10, 0"/>
+                                    <Button Text="Del"
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Command="{Binding DeleteNotificationCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                </Grid>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>

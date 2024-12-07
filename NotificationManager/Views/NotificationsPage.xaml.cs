@@ -11,4 +11,9 @@ public partial class NotificationsPage : ContentPage
 		_viewModel = viewModel;
 		BindingContext = _viewModel;
 	}
+
+    private void OnDelBtnClicked(object sender, EventArgs e)
+    {
+
+    }
 }

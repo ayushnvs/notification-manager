@@ -3,6 +3,7 @@ using NotificationManager.Entities.Models;
 using NotificationManager.Repository.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Windows.UI.Notifications;
 
 namespace NotificationManager.ViewModel;
 
@@ -47,6 +48,8 @@ public class NotificationsPageViewModel : ObservableObject
             LoadNotifications(_appPackageName);
             IsRefreshing = false;
         });
+        // TODO: Complete Delete command function
+        DeleteNotificationCommand = new Command<NotificationDBO>(DeleteNotification);
     }
 
     public async void LoadNotifications(string packageName)

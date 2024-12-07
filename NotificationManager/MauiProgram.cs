@@ -1,4 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using NotificationManager.Database;
+using NotificationManager.Repository;
+using NotificationManager.Repository.IRepository;
 
 namespace NotificationManager
 {
@@ -18,6 +21,9 @@ namespace NotificationManager
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+
+            builder.Services.AddSingleton<DatabaseContext>();
+            builder.Services.AddSingleton<INotificationRepository, NotificationRepository>();
 
             return builder.Build();
         }

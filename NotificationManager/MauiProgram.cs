@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using NotificationManager.Database;
 using NotificationManager.Repository;
-using NotificationManager.Repository.IRepository;
+using NotificationManager.Repository.Interfaces;
+using NotificationManager.ViewModel;
+using NotificationManager.Views;
 
 namespace NotificationManager
 {
@@ -24,6 +26,8 @@ namespace NotificationManager
 
             builder.Services.AddSingleton<DatabaseContext>();
             builder.Services.AddSingleton<INotificationRepository, NotificationRepository>();
+            builder.Services.AddSingleton<NotificationViewModel>();
+            builder.Services.AddSingleton<MainPage>();
 
             return builder.Build();
         }

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NotificationManager.Views.NotificationsPage"
              xmlns:viewmodel="NotificationManager.ViewModel.NotificationsPageViewModel"
-             Title="NotificationsPage">
+             Title="Notifications">
 
     <RefreshView x:Name="NotisRefreshView"
         IsRefreshing="{Binding IsRefreshing}"

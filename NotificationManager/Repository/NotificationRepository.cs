@@ -2,6 +2,7 @@
 using NotificationManager.Database;
 using NotificationManager.Entities.Models;
 using NotificationManager.Repository.Interfaces;
+using NotificationManager.Entities.DTO;
 
 namespace NotificationManager.Repository;
 
@@ -54,13 +55,35 @@ public class NotificationRepository : INotificationRepository
         return await _databaseContext.Database.DeleteAsync(item);
     }
 
-    public async Task<List<string?>> GetUniqueAppNamesAsync()
+    public async Task<List<NotificationCountDTO>> GetUniqueAppNamesAsync()
     {
         await _databaseContext.InitializeDatabase();
-
         List<NotificationDBO> appList = await _databaseContext.Database
             .Table<NotificationDBO>().ToListAsync();
 
-        return appList.Select(app => app.NotificationApp).Distinct().ToList();
+        List<string?> appNameLists = appList.Select(app => app.NotificationApp).Distinct().ToList();
+
+        List<NotificationCountDTO> notificationCountList = new List<NotificationCountDTO>();
+        foreach (string? appName in appNameLists) 
+        {
+            if (appName == null) continue;
+            NotificationCountDTO notifCount = new NotificationCountDTO()
+            {
+                AppName = appName,
+                Count = await GetAppNotificationCount(appName)
+            };
+            notificationCountList.Add(notifCount);
+        }
+
+        return notificationCountList;
+    }
+
+    public async Task<int> GetAppNotificationCount(string appName)
+    {
+        await _databaseContext.InitializeDatabase();
+        List<NotificationDBO> appList = await _databaseContext.Database
+            .Table<NotificationDBO>().Where(app => app.NotificationApp == appName).ToListAsync();
+
+        return appList.Count();
     }
 }

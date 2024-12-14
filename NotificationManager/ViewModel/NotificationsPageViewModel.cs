@@ -3,7 +3,6 @@ using NotificationManager.Entities.Models;
 using NotificationManager.Repository.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Windows.UI.Notifications;
 
 namespace NotificationManager.ViewModel;
 
@@ -22,7 +21,7 @@ public class NotificationsPageViewModel : ObservableObject
     private string _appPackageName {get; set;}
     private readonly INotificationRepository _notificationRepository;
     private ObservableCollection<NotificationDBO> _notifications;
-    public Command<NotificationDBO> DeleteNotificationCommand { get; }
+    public ICommand DeleteNotificationCommand { get; set; }
     public ICommand RefreshCommand { get; }
     public bool isRefreshing;
     public ObservableCollection<NotificationDBO> Notifications
@@ -43,13 +42,14 @@ public class NotificationsPageViewModel : ObservableObject
     public NotificationsPageViewModel(INotificationRepository notificationRepository)
     {
         _notificationRepository = notificationRepository;
+
+        DeleteNotificationCommand = new Command<NotificationDBO>(DeleteNotification);
+
         RefreshCommand = new Command(() =>
         {
             LoadNotifications(_appPackageName);
             IsRefreshing = false;
         });
-        // TODO: Complete Delete command function
-        DeleteNotificationCommand = new Command<NotificationDBO>(DeleteNotification);
     }
 
     public async void LoadNotifications(string packageName)

@@ -17,7 +17,7 @@ public class NotificationRepository : INotificationRepository
     public async Task<List<NotificationDBO>> GetNotificationsAsync(string? appName)
     {
         await _databaseContext.InitializeDatabase();
-        AsyncTableQuery<NotificationDBO> query = _databaseContext.Database.Table<NotificationDBO>();
+        AsyncTableQuery<NotificationDBO> query = _databaseContext.Database.Table<NotificationDBO>().Take(10);
         if (appName != null)
         {
             query = query.Where(notif => notif.NotificationApp == appName);

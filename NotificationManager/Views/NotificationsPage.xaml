@@ -15,7 +15,7 @@
                           ItemsSource="{Binding Notifications}"
                           RowHeight="75"
                           SeparatorColor="Silver"
-                          SelectionMode="Single">
+                          SelectionMode="None">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -23,21 +23,22 @@
                                     <Label Text="{Binding NotificationTitle}"
                                            Grid.Row="0"
                                            Grid.Column="0"
-                                           FontSize="18"
+                                           FontSize="20"
                                            VerticalOptions="Center"
                                            Padding="10, 0"/>
                                     <Label Text="{Binding NotificationText}"
                                            Grid.Row="1"
                                            Grid.Column="0"
-                                           FontSize="18"
+                                           FontSize="16"
                                            VerticalOptions="Center"
                                            Padding="10, 0"/>
-                                    <Button Text="Del"
+                                    <ImageButton Source="dotnet_bot.png"
                                             Grid.Row="0"
                                             Grid.Column="1"
                                             Grid.RowSpan="2"
                                             Command="{Binding Path=BindingContext.DeleteNotificationCommand, Source={x:Reference listView}}"
-                                            CommandParameter="{Binding .}"/>
+                                            CommandParameter="{Binding .}" />
+
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>

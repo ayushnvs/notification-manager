@@ -1,11 +1,12 @@
-﻿using SQLite;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NotificationManager.Entities.Models;
 
 [Table("notification")]
 public class NotificationDBO
 {
-    [PrimaryKey, Column("id")]
+    [Key, Column("id")]
     public Guid Id { get; set; } = Guid.NewGuid();
 
     [Column("notif_title")]
@@ -22,4 +23,10 @@ public class NotificationDBO
 
     [Column("recieved_on")]
     public DateTime RecievedOn { get; set; }
+
+    //[Column("fk_application_id")]
+    //public Guid ApplicationId { get; set; }
+
+    //[ForeignKey(nameof(ApplicationId))]
+    //public ApplicationDBO? Application { get; set; }
 }

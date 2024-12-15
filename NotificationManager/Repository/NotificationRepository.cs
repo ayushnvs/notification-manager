@@ -1,8 +1,8 @@
-﻿using SQLite;
-using NotificationManager.Database;
+﻿using NotificationManager.Database;
 using NotificationManager.Entities.Models;
 using NotificationManager.Repository.Interfaces;
 using NotificationManager.Entities.DTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace NotificationManager.Repository;
 
@@ -17,8 +17,7 @@ public class NotificationRepository : INotificationRepository
 
     public async Task<List<NotificationDBO>> GetNotificationsAsync(string? appName)
     {
-        await _databaseContext.InitializeDatabase();
-        AsyncTableQuery<NotificationDBO> query = _databaseContext.Database.Table<NotificationDBO>().Take(10);
+        IQueryable<NotificationDBO> query = _databaseContext.Notification.Take(10);
         if (appName != null)
         {
             query = query.Where(notif => notif.NotificationApp == appName);
@@ -26,40 +25,28 @@ public class NotificationRepository : INotificationRepository
         return await query.ToListAsync();
     }
 
-    public async Task<NotificationDBO> GetNotificationAsync(Guid id)
+    public async Task<NotificationDBO?> GetNotificationAsync(Guid id)
     {
-        await _databaseContext.InitializeDatabase();
-        return await _databaseContext.Database.Table< NotificationDBO>().Where(i => i.Id == id).FirstOrDefaultAsync();
+        return await _databaseContext.Notification.Where(i => i.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task<int> SaveNotificationAsync(NotificationDBO item)
     {
-        await _databaseContext.InitializeDatabase();
-
-        NotificationDBO? notif = await GetNotificationAsync(item.Id);
-
-        if (notif != null)
-        {
-            return await _databaseContext.Database.UpdateAsync(item);
-        }
-        else
-        {
-            return await _databaseContext.Database.InsertAsync(item);
-        }
+        await _databaseContext.Notification.AddAsync(item);
+        return await _databaseContext.SaveChangesAsync();
     }
 
     public async Task<int> DeleteNotificationAsync(Guid id)
     {
-        await _databaseContext.InitializeDatabase();
-        NotificationDBO item = await GetNotificationAsync(id);
-        return await _databaseContext.Database.DeleteAsync(item);
+        NotificationDBO? item = await GetNotificationAsync(id);
+        if (item == null) return 1;
+        _databaseContext.Notification.Remove(item);
+        return await _databaseContext.SaveChangesAsync();
     }
 
     public async Task<List<NotificationCountDTO>> GetUniqueAppNamesAsync()
     {
-        await _databaseContext.InitializeDatabase();
-        List<NotificationDBO> appList = await _databaseContext.Database
-            .Table<NotificationDBO>().ToListAsync();
+        List<NotificationDBO> appList = await _databaseContext.Notification.ToListAsync();
 
         List<string?> appNameLists = appList.Select(app => app.NotificationApp).Distinct().ToList();
 
@@ -80,9 +67,7 @@ public class NotificationRepository : INotificationRepository
 
     public async Task<int> GetAppNotificationCount(string appName)
     {
-        await _databaseContext.InitializeDatabase();
-        List<NotificationDBO> appList = await _databaseContext.Database
-            .Table<NotificationDBO>().Where(app => app.NotificationApp == appName).ToListAsync();
+        List<NotificationDBO> appList = await _databaseContext.Notification.Where(app => app.NotificationApp == appName).ToListAsync();
 
         return appList.Count();
     }

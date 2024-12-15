@@ -1,21 +1,21 @@
-﻿using SQLite;
+﻿using Microsoft.EntityFrameworkCore;
 using NotificationManager.Entities.Models;
 
 namespace NotificationManager.Database;
 
-public class DatabaseContext
+public class DatabaseContext : DbContext
 {
-    public SQLiteAsyncConnection Database;
+    public DbSet<NotificationDBO> Notification { get; set; }
+
+
+
+    public string DbPath { get; set; }
 
     public DatabaseContext()
     {
+        DbPath = Constants.DatabasePath;
     }
 
-    public async Task InitializeDatabase()
-    {
-        if (Database is not null) return;
-
-        Database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
-        await Database.CreateTableAsync<NotificationDBO>();
-    }
+    protected override void OnConfiguring(DbContextOptionsBuilder options)
+        => options.UseSqlite($"Data Source={DbPath}");
 }

@@ -24,7 +24,11 @@ namespace NotificationManager
     		builder.Logging.AddDebug();
 #endif
 
-            builder.Services.AddSingleton<DatabaseContext>();
+            builder.Services.AddDbContext<DatabaseContext>();
+            var dbContext = new DatabaseContext();
+            dbContext.Database.EnsureCreated();
+            dbContext.Dispose();
+
             builder.Services.AddSingleton<INotificationRepository, NotificationRepository>();
             builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddSingleton<MainPage>();

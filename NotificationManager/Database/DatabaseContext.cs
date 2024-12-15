@@ -6,7 +6,7 @@ namespace NotificationManager.Database;
 public class DatabaseContext : DbContext
 {
     public DbSet<NotificationDBO> Notification { get; set; }
-
+    public DbSet<ApplicationDBO> Application { get; set; }
 
 
     public string DbPath { get; set; }

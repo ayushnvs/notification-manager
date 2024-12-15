@@ -48,16 +48,17 @@ public class NotificationRepository : INotificationRepository
     {
         List<NotificationDBO> appList = await _databaseContext.Notification.ToListAsync();
 
-        List<string?> appNameLists = appList.Select(app => app.NotificationApp).Distinct().ToList();
+        List<string?> packageLists = appList.Select(app => app.NotificationApp).Distinct().ToList();
 
         List<NotificationCountDTO> notificationCountList = new List<NotificationCountDTO>();
-        foreach (string? appName in appNameLists) 
+        foreach (string? package in packageLists) 
         {
-            if (appName == null) continue;
+            if (package == null) continue;
             NotificationCountDTO notifCount = new NotificationCountDTO()
             {
-                AppName = appName,
-                Count = await GetAppNotificationCount(appName)
+                PackageName = package,
+                AppName = package,
+                Count = await GetAppNotificationCount(package)
             };
             notificationCountList.Add(notifCount);
         }

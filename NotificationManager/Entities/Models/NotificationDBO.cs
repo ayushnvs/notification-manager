@@ -24,9 +24,9 @@ public class NotificationDBO
     [Column("recieved_on")]
     public DateTime RecievedOn { get; set; }
 
-    //[Column("fk_application_id")]
-    //public Guid ApplicationId { get; set; }
+    [Column("fk_application_id")]
+    public Guid ApplicationId { get; set; }
 
-    //[ForeignKey(nameof(ApplicationId))]
-    //public ApplicationDBO? Application { get; set; }
+    [ForeignKey(nameof(ApplicationId))]
+    public ApplicationDBO? Application { get; set; }
 }

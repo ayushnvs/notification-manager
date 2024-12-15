@@ -5,11 +5,11 @@ namespace NotificationManager.Entities.Models;
 public class ApplicationDBO : BaseDBO
 {
     [Column("name")]
-    public string? name { get; set; }
+    public string? Name { get; set; }
 
     [Column("package")]
-    public string? package {  get; set; }
+    public string? Package {  get; set; }
 
     [Column("icon")]
-    public byte[]? icon { get; set; }
+    public byte[]? Icon { get; set; }
 }

@@ -40,6 +40,7 @@ public class NotificationReceiverService : BroadcastReceiver
         }
         catch (PackageManager.NameNotFoundException)
         {
+            //TODO: Handled missed notification due to null ApplicationInfo
             return;
         }
 

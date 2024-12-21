@@ -17,7 +17,7 @@ public partial class MainPage : ContentPage
     private async void OnAppSelected(object sender, SelectedItemChangedEventArgs e)
     {
         if (listView.SelectedItem == null) return;
-        await Shell.Current.GoToAsync($"{nameof(NotificationsPage)}?appName={((NotificationCountDTO)listView.SelectedItem).AppName}");
+        await Shell.Current.GoToAsync($"{nameof(NotificationsPage)}?packageName={((ApplicationViewDTO)listView.SelectedItem).PackageName}");
     }
 
     private void OnAppTapped(object sender, ItemTappedEventArgs e)

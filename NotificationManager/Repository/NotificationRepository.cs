@@ -44,21 +44,24 @@ public class NotificationRepository : INotificationRepository
         return await _databaseContext.SaveChangesAsync();
     }
 
-    public async Task<List<NotificationCountDTO>> GetUniqueAppNamesAsync()
+    public async Task<List<ApplicationViewDTO>> GetUniqueAppNamesAsync()
     {
         List<NotificationDBO> appList = await _databaseContext.Notification.ToListAsync();
 
-        List<string?> packageLists = appList.Select(app => app.NotificationApp).Distinct().ToList();
+        List<ApplicationDBO?> appLists = appList.Select(app => app.Application).Distinct().ToList();
 
-        List<NotificationCountDTO> notificationCountList = new List<NotificationCountDTO>();
-        foreach (string? package in packageLists) 
+        List<ApplicationViewDTO> notificationCountList = new List<ApplicationViewDTO>();
+        foreach (ApplicationDBO? app in appLists) 
         {
-            if (package == null) continue;
-            NotificationCountDTO notifCount = new NotificationCountDTO()
+            if (app == null) continue;
+
+            ApplicationViewDTO notifCount = new ApplicationViewDTO()
             {
-                PackageName = package,
-                AppName = package,
-                Count = await GetAppNotificationCount(package)
+                PackageName = app.Package,
+                AppName = app.Name,
+                AppLogo = app.Icon != null ? ImageSource.FromStream(() => new MemoryStream(app.Icon)) : null,
+                ShowDefaultAppIcon = app.Icon == null ? true : false,
+                Count = await GetAppNotificationCount(app.Id)
             };
             notificationCountList.Add(notifCount);
         }
@@ -66,9 +69,9 @@ public class NotificationRepository : INotificationRepository
         return notificationCountList;
     }
 
-    public async Task<int> GetAppNotificationCount(string appName)
+    public async Task<int> GetAppNotificationCount(Guid appId)
     {
-        List<NotificationDBO> appList = await _databaseContext.Notification.Where(app => app.NotificationApp == appName).ToListAsync();
+        List<NotificationDBO> appList = await _databaseContext.Notification.Where(app => app.ApplicationId == appId).ToListAsync();
 
         return appList.Count();
     }

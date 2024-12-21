@@ -9,6 +9,6 @@ public interface INotificationRepository
     Task<NotificationDBO?> GetNotificationAsync(Guid id);
     Task<int> SaveNotificationAsync(NotificationDBO item);
     Task<int> DeleteNotificationAsync(Guid id);
-    Task<List<NotificationCountDTO>> GetUniqueAppNamesAsync();
-    Task<int> GetAppNotificationCount(string appName);
+    Task<List<ApplicationViewDTO>> GetUniqueAppNamesAsync();
+    Task<int> GetAppNotificationCount(Guid appId);
 }

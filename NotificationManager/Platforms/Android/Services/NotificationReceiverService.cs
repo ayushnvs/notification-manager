@@ -33,32 +33,35 @@ public class NotificationReceiverService : BroadcastReceiver
         if (title == null && text == null) return;
         if (packageName == null) return;
 
-
-        PackageManager? packageManager = context?.PackageManager;
-        if (packageManager == null) return;
-
-        ApplicationInfo applicationInfo;
-        try
-        {
-            applicationInfo = packageManager.GetApplicationInfo(packageName, 0);
-        }
-        catch (PackageManager.NameNotFoundException)
-        {
-            //TODO: Handled missed notification due to null ApplicationInfo
-            return;
-        }
-
-        string? appName = null;
-        Drawable? appLogo = null;
-        if (applicationInfo != null)
-        {
-            appName = packageManager.GetApplicationLabel(applicationInfo);
-            appLogo = packageManager.GetApplicationLogo(applicationInfo);
-        }
-
         ApplicationDBO? application = await _applicationRepository.GetApplicationAsync(packageName);
-        if (application == null) 
+        if (application == null)
         {
+            PackageManager? packageManager = context?.PackageManager;
+            if (packageManager == null) return;
+
+            ApplicationInfo applicationInfo;
+            try
+            {
+                applicationInfo = packageManager.GetApplicationInfo(packageName, 0);
+            }
+            catch (PackageManager.NameNotFoundException)
+            {
+                //TODO: Handle missed notification due to null ApplicationInfo
+                return;
+            }
+
+            string? appName = null;
+            Drawable? appLogo = null;
+            if (applicationInfo != null)
+            {
+                appName = packageManager.GetApplicationLabel(applicationInfo);
+                appLogo = packageManager.GetApplicationLogo(applicationInfo);
+                if (appLogo == null)
+                {
+                    appLogo = applicationInfo.LoadIcon(packageManager);
+                }
+            }
+
             application = new ApplicationDBO()
             {
                 Name = appName,

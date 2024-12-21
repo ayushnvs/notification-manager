@@ -9,11 +9,11 @@ namespace NotificationManager.ViewModel;
 public class MainPageViewModel : ObservableObject
 {
     private readonly INotificationRepository _notificationRepository;
-    private ObservableCollection<NotificationCountDTO> _appName;
+    private ObservableCollection<ApplicationViewDTO> _appName;
     public Command<string> DeleteNotificationCommand { get; }
     public ICommand RefreshCommand { get; }
     public bool isRefreshing;
-    public ObservableCollection<NotificationCountDTO> AppNames
+    public ObservableCollection<ApplicationViewDTO> AppNames
     {
         get => _appName;
         set => SetProperty(ref _appName, value);
@@ -41,11 +41,11 @@ public class MainPageViewModel : ObservableObject
 
     public async void LoadNotifications()
     {
-        List<NotificationCountDTO> appLists = await _notificationRepository.GetUniqueAppNamesAsync();
-        AppNames = new ObservableCollection<NotificationCountDTO>(appLists);
+        List<ApplicationViewDTO> appLists = await _notificationRepository.GetUniqueAppNamesAsync();
+        AppNames = new ObservableCollection<ApplicationViewDTO>(appLists);
     }
 
-    public async void DeleteNotification(NotificationCountDTO notification)
+    public async void DeleteNotification(ApplicationViewDTO notification)
     {
         // TODO: await _notificationRepository.DeleteNotificationAsync(notification.Id);
         AppNames.Remove(notification);

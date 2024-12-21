@@ -30,6 +30,7 @@ namespace NotificationManager
             dbContext.Dispose();
 
             builder.Services.AddSingleton<INotificationRepository, NotificationRepository>();
+            builder.Services.AddSingleton<IApplicationRepository, ApplicationRepository>();
             builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<NotificationsPage>();

@@ -19,16 +19,25 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Grid RowDefinitions="*" ColumnDefinitions="4*, *">
-                                    <Label Text="{Binding AppName}"
+                                <Grid RowDefinitions="*" ColumnDefinitions="*, 4*, *">
+                                    <Image Source="{Binding AppLogo}"
                                            Grid.Row="0"
                                            Grid.Column="0"
+                                           WidthRequest="45"/>
+                                    <Image Source="default_icon.png"
+                                           x:Name="xamlDefaultAppImage"
+                                           Grid.Row="0"
+                                           Grid.Column="0"
+                                           IsVisible="{Binding ShowDefaultAppIcon}"/>
+                                    <Label Text="{Binding AppName}"
+                                           Grid.Row="0"
+                                           Grid.Column="1"
                                            FontSize="18"
                                            VerticalOptions="Center"
                                            Padding="10, 0"/>
                                     <Label Text="{Binding Count}"
                                            Grid.Row="0"
-                                           Grid.Column="1"
+                                           Grid.Column="2"
                                            FontSize="18"
                                            VerticalOptions="Center"
                                            Padding="10, 0"/>

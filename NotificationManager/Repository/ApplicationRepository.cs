@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NotificationManager.Database;
 using NotificationManager.Entities.Models;
+using NotificationManager.Repository.Interfaces;
 
 namespace NotificationManager.Repository;
 
-public class ApplicationRepository
+public class ApplicationRepository : IApplicationRepository
 {
     private readonly DatabaseContext _databaseContext;
 

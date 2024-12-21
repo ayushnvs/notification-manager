@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace NotificationManager.ViewModel;
 
-[QueryProperty(nameof(AppPackageName), "appName")]
+[QueryProperty(nameof(AppPackageName), "packageName")]
 public class NotificationsPageViewModel : ObservableObject
 {
     public string AppPackageName

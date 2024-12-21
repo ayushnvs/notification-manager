@@ -38,8 +38,15 @@ public class NotificationReceiverService : BroadcastReceiver
         if (packageManager == null) return;
 
         ApplicationInfo applicationInfo;
-
-        applicationInfo = packageManager.GetApplicationInfo(packageName, 0);
+        try
+        {
+            applicationInfo = packageManager.GetApplicationInfo(packageName, 0);
+        }
+        catch (PackageManager.NameNotFoundException)
+        {
+            //TODO: Handled missed notification due to null ApplicationInfo
+            return;
+        }
 
         string? appName = null;
         Drawable? appLogo = null;

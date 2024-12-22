@@ -15,12 +15,12 @@ public class NotificationRepository : INotificationRepository
         _databaseContext = databaseContext;
     }
 
-    public async Task<List<NotificationDBO>> GetNotificationsAsync(string? appName)
+    public async Task<List<NotificationDBO>> GetNotificationsAsync(string? packageName)
     {
-        IQueryable<NotificationDBO> query = _databaseContext.Notification.Take(10);
-        if (appName != null)
+        IQueryable<NotificationDBO> query = _databaseContext.Notification;
+        if (packageName != null)
         {
-            query = query.Where(notif => notif.NotificationApp == appName);
+            query = query.Where(notif => notif.NotificationApp == packageName);
         }
         return await query.ToListAsync();
     }

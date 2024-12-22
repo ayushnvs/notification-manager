@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using NotificationManager.Entities.DTO;
+using NotificationManager.Entities.Models;
 using NotificationManager.Repository.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -9,6 +10,7 @@ namespace NotificationManager.ViewModel;
 public class MainPageViewModel : ObservableObject
 {
     private readonly INotificationRepository _notificationRepository;
+    private readonly IApplicationRepository _applicationRepository;
     private ObservableCollection<ApplicationViewDTO> _appName;
     public Command<string> DeleteNotificationCommand { get; }
     public ICommand RefreshCommand { get; }
@@ -28,20 +30,21 @@ public class MainPageViewModel : ObservableObject
         }
     }
 
-    public MainPageViewModel(INotificationRepository notificationRepository) 
+    public MainPageViewModel(INotificationRepository notificationRepository, IApplicationRepository applicationRepository) 
     {
         _notificationRepository = notificationRepository;
-        LoadNotifications();
+        _applicationRepository = applicationRepository;
+        LoadApplications();
         RefreshCommand = new Command(() =>
         {
-            LoadNotifications();
+            LoadApplications();
             IsRefreshing = false;
         });
     }
 
-    public async void LoadNotifications()
+    public async void LoadApplications()
     {
-        List<ApplicationViewDTO> appLists = await _notificationRepository.GetUniqueAppNamesAsync();
+        List<ApplicationViewDTO> appLists = await _applicationRepository.GetAllApplicationAsync();
         AppNames = new ObservableCollection<ApplicationViewDTO>(appLists);
     }
 

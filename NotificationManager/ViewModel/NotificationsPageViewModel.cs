@@ -54,7 +54,8 @@ public class NotificationsPageViewModel : ObservableObject
 
     public async void LoadNotifications(string packageName)
     {
-        Notifications = new ObservableCollection<NotificationDBO>(await _notificationRepository.GetNotificationsAsync(packageName));
+        List<NotificationDBO> notifs = await _notificationRepository.GetNotificationsAsync(packageName);
+        Notifications = new ObservableCollection<NotificationDBO>(notifs);
     }
 
     public async void DeleteNotification(NotificationDBO notification)

@@ -15,7 +15,8 @@
                           RowHeight="75"
                           SeparatorColor="Silver"
                           ItemSelected="OnAppSelected"
-                          ItemTapped="OnAppTapped">
+                          ItemTapped="OnAppTapped"
+                          SelectionMode="Single">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

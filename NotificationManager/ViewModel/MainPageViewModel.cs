@@ -9,7 +9,6 @@ namespace NotificationManager.ViewModel;
 
 public class MainPageViewModel : ObservableObject
 {
-    private readonly INotificationRepository _notificationRepository;
     private readonly IApplicationRepository _applicationRepository;
     private ObservableCollection<ApplicationViewDTO> _appName;
     public Command<string> DeleteNotificationCommand { get; }
@@ -30,9 +29,8 @@ public class MainPageViewModel : ObservableObject
         }
     }
 
-    public MainPageViewModel(INotificationRepository notificationRepository, IApplicationRepository applicationRepository) 
+    public MainPageViewModel(IApplicationRepository applicationRepository) 
     {
-        _notificationRepository = notificationRepository;
         _applicationRepository = applicationRepository;
         LoadApplications();
         RefreshCommand = new Command(() =>

@@ -11,39 +11,38 @@
         <ScrollView>
             <VerticalStackLayout Padding="0,0" Spacing="100">
 
-                <ListView x:Name="listView"
+                <CollectionView x:Name="listView"
                           ItemsSource="{Binding Notifications}"
-                          RowHeight="75"
-                          SeparatorColor="Silver"
                           SelectionMode="None">
-                    <ListView.ItemTemplate>
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <Grid RowDefinitions="*, *" ColumnDefinitions="5*, *">
+                            <StackLayout>
+                                <Grid RowDefinitions="*, *" ColumnDefinitions="5*, *" HeightRequest="60" Margin="0, 10">
                                     <Label Text="{Binding NotificationTitle}"
-                                           Grid.Row="0"
-                                           Grid.Column="0"
-                                           FontSize="20"
-                                           VerticalOptions="Center"
-                                           Padding="10, 0"/>
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        FontSize="20"
+                                        VerticalOptions="Center"
+                                        Padding="10, 0"/>
                                     <Label Text="{Binding NotificationText}"
-                                           Grid.Row="1"
-                                           Grid.Column="0"
-                                           FontSize="16"
-                                           VerticalOptions="Center"
-                                           Padding="10, 0"/>
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        FontSize="16"
+                                        VerticalOptions="Center"
+                                        Padding="10, 0"/>
                                     <ImageButton Source="dotnet_bot.png"
-                                            Grid.Row="0"
-                                            Grid.Column="1"
-                                            Grid.RowSpan="2"
-                                            Command="{Binding Path=BindingContext.DeleteNotificationCommand, Source={x:Reference listView}}"
-                                            CommandParameter="{Binding .}" />
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Grid.RowSpan="2"
+                                        Command="{Binding Path=BindingContext.DeleteNotificationCommand, Source={x:Reference listView}}"
+                                        CommandParameter="{Binding .}" />
 
                                 </Grid>
-                            </ViewCell>
+                                <BoxView HeightRequest="1" BackgroundColor="Silver" />
+                            </StackLayout>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
             </VerticalStackLayout>
         </ScrollView>

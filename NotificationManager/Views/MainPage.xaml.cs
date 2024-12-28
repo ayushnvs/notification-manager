@@ -14,14 +14,14 @@ public partial class MainPage : ContentPage
         BindingContext = _mainPageViewModel;
     }
 
-    private async void OnAppSelected(object sender, SelectedItemChangedEventArgs e)
+    private async void OnAppTapped(object sender, TappedEventArgs e)
     {
-        if (listView.SelectedItem == null) return;
-        await Shell.Current.GoToAsync($"{nameof(NotificationsPage)}?packageName={((ApplicationViewDTO)listView.SelectedItem).PackageName}");
-    }
-
-    private void OnAppTapped(object sender, ItemTappedEventArgs e)
-    {
-        listView.SelectedItem = null;
+        if (sender is Grid grid)
+        {
+            if (grid.BindingContext is ApplicationViewDTO tappedItem)
+            {
+                await Shell.Current.GoToAsync($"{nameof(NotificationsPage)}?packageName={tappedItem.PackageName}");
+            }
+        }
     }
 }

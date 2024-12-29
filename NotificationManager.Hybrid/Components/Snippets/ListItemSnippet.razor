@@ -1,0 +1,35 @@
+﻿<div class="app-data-container">
+    <div class="app-icon">
+        <img src="https://picsum.photos/seed/picsum/200/300" />
+    </div>
+    <div class="list-content">
+        <div class="app-name">Camera</div>
+        <div class="notification-count">24</div>
+    </div>
+</div>
+<hr style="width:100%;text-align:center;color:silver;">
+
+
+<style>
+    .app-data-container, .list-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .app-icon > img {
+        height: 35px;
+        width: 35px;
+        border-radius: 40%;
+    }
+
+    .list-content {
+        width: 100%;
+        justify-content: space-between;
+    }
+</style>
+
+@code {
+
+}

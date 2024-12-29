@@ -1,0 +1,75 @@
+﻿<div class="title-bar">
+    <div class="page-title">
+        @if (showBackOnSelectClick)
+        {
+            <img class="nm-icon px-2" src="svg/back-svgrepo-com.svg" @onclick="onBackClick" />
+            <div style="padding-left: 10px">Select Multiple</div>
+        }
+        else
+        {
+            <img class="nm-icon px-2" src="svg/hamburger-menu-svgrepo-com.svg" />
+            <div style="padding-left: 10px">Apps</div>
+        }
+    </div>
+    <div class="page-actions">
+        @if (showBackOnSelectClick)
+        {
+                <input type="checkbox" class="select-checkbox" style="padding-right:10px;" @onchange="onSelectAllClick" />
+                <img class="nm-icon px-2" src="svg/bin-svgrepo-com.svg" />
+        }
+        else
+        {
+            <img class="nm-icon px-2" src="svg/search-svgrepo-com.svg" />
+            <img class="nm-icon px-2" src="svg/refresh-2-svgrepo-com.svg" />
+            <img class="nm-icon px-2" src="svg/select-multiple-svgrepo-com.svg" @onclick="selectOnClick" />
+        }
+    </div>
+</div>
+
+<style>
+    .title-bar, .page-title, .page-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    }
+
+    .title-bar {
+    height: 50px;
+    padding: 0px 10px;
+    background-color: #f6f6f6;
+    }
+
+    .page-title {
+    font-weight: 600;
+    font-size: 20px;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public EventCallback<bool> SelectMultipleClick { get; set; }
+    [Parameter]
+    public EventCallback<bool> SelectAll { get; set; }
+
+    public bool isSelectClicked { get; set; } = false;
+    public bool showBackOnSelectClick = false;
+    public bool isSelectAllChecked = false;
+    private async void selectOnClick()
+    {
+        isSelectClicked = true;
+        showBackOnSelectClick = true;
+        await SelectMultipleClick.InvokeAsync(true);
+    }
+    private async void onBackClick()
+    {
+        isSelectClicked = false;
+        showBackOnSelectClick = false;
+        await SelectMultipleClick.InvokeAsync(false);
+    }
+
+    private async void onSelectAllClick(ChangeEventArgs args)
+    {
+        await SelectAll.InvokeAsync((bool)args.Value);
+    }
+}

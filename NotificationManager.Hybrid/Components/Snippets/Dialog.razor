@@ -1,0 +1,92 @@
+﻿@if (Opened)
+{
+    <div class="overlay">
+        <div class="dialog">
+            <div class="dialog-header">
+                <div>@Title</div>
+                <div>
+                    <div class="close">
+                        <img class="px-2" style="height:20px;" src="svg/close-svgrepo-com.svg" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="dialog-body">
+                @BodyContent
+            </div>
+
+            <div class="dialog-footer">
+                @FooterContent
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .overlay {
+            position: fixed;
+            width: 80%;
+            height: 80%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0,0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .dialog {
+            width: 750px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .dialog .dialog-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem;
+        }
+
+        .dialog .dialog-body {
+            padding: 2rem;
+        }
+
+        .dialog .dialog-footer {
+            padding: 2rem;
+        }
+
+
+        .close {
+            height: 40px;
+            width: 40px;
+            background-color: transparent;
+            transition: 0.25s ease;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            background-color: #DDD;
+        }
+    </style>
+}
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public RenderFragment? BodyContent { get; set; }
+    [Parameter] public RenderFragment? FooterContent { get; set; }
+    [Parameter] public bool Opened { get; set; }
+    [Parameter] public EventCallback CloseButtonClicked { get; set; }
+
+    private void CloseDialog()
+    {
+        Opened = false;
+        CloseButtonClicked.InvokeAsync();
+    }
+}

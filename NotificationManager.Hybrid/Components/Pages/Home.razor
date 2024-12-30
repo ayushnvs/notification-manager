@@ -1,6 +1,6 @@
 ﻿@page "/"
 @using NotificationManager.Entities.DTO
-@using NotificationManager.Hybrid.Components.Layout
+@using NotificationManager.Hybrid.Components.Snippets
 @using NotificationManager.Hybrid.Service.Interface
 @using NotificationManager.Repository.Interfaces
 @inject IApplicationRepository _applicationRepository
@@ -9,6 +9,17 @@
 <TitleBar SelectMultipleClick="selectAppAction" SelectAll="selectAllApp" DeleteItem="deleteSelectedItem" />
 
 <div class="cmp-element container" style="padding-top: 15px;">
+    <Dialog Title="Delete Alert!" Opened="showDeleteAlert">
+        <BodyContent>
+            <p style="font-size: 20px;">
+                Are you sure you want to delete all the notifications for the selected apps?
+            </p>
+        </BodyContent>
+
+        <FooterContent>
+            <button class="ok-button">yes</button>
+        </FooterContent>
+    </Dialog>
     @foreach (var app in appLists)
     {
         <div class="app-data-container px-2 py-2">

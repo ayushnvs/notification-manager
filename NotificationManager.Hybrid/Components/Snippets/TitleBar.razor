@@ -8,7 +8,7 @@
         else
         {
             <img class="nm-icon px-2" src="svg/hamburger-menu-svgrepo-com.svg" />
-            <div style="padding-left: 10px">Apps</div>
+            <div style="padding-left: 10px">@PageTitle</div>
         }
     </div>
     <div class="page-actions">
@@ -47,16 +47,14 @@
 </style>
 
 @code {
-    [Parameter]
-    public EventCallback<bool> SelectMultipleClick { get; set; }
-    [Parameter]
-    public EventCallback<bool> SelectAll { get; set; }
-    [Parameter]
-    public EventCallback DeleteItem { get; set; }
-
+    [Parameter] public string PageTitle { get; set; } = "Home";
+    [Parameter] public EventCallback<bool> SelectMultipleClick { get; set; }
+    [Parameter] public EventCallback<bool> SelectAll { get; set; }
+    [Parameter] public EventCallback DeleteItem { get; set; }
     public bool isSelectClicked { get; set; } = false;
     public bool showBackOnSelectClick = false;
     public bool isSelectAllChecked = false;
+
     private async void selectOnClick()
     {
         isSelectClicked = true;

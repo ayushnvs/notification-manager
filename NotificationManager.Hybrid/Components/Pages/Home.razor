@@ -6,7 +6,7 @@
 @inject IApplicationRepository _applicationRepository
 @inject INotificationService _notificationService
 
-<TitleBar @ref="titleBar" SelectMultipleClick="selectAppAction" SelectAll="selectAllApp" DeleteItem="showDeleteAlertBox" />
+<TitleBar @ref="titleBar" PageTitle="Application" SelectMultipleClick="selectAppAction" SelectAll="selectAllApp" DeleteItem="showDeleteAlertBox" />
 
 <div class="cmp-element container" style="padding-top: 15px;">
     <Dialog Title="Delete Alert!" Opened="showDeleteAlert" CloseButtonClicked="@(() => showDeleteAlert = false)">
@@ -22,7 +22,7 @@
     </Dialog>
     @foreach (var app in appLists)
     {
-        <div class="app-data-container px-2 py-2">
+        <div class="app-data-container px-2 py-2" @onclick="() => NavigateToNotification(app.PackageName, app.AppName)">
             <div class="list-header-content">
                 @if (showSelectCheckbox)
                 {
@@ -83,6 +83,8 @@
     private bool reverseTitlebar { get; set; }
     private List<string> packageList = new List<string>();
     TitleBar titleBar;
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -128,4 +130,17 @@
         showSelectCheckbox = false;
         titleBar.onBackClick();
     }
+
+    private void NavigateToNotification(string package, string appName)
+    {
+        if(!showSelectCheckbox)
+        {
+            NavigationManager.NavigateTo($"/notification/{package}");
+        }
+        else
+        {
+            // TODO: Handle Select Checkbox
+        }
+    }
+    // TODO: ISSUE-Dialog box is appearing with no app selected to disappear
 }

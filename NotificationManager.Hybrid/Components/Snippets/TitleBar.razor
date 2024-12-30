@@ -15,7 +15,7 @@
         @if (showBackOnSelectClick)
         {
             <input type="checkbox" class="select-checkbox" style="padding-right:10px;" @onchange="onSelectAllClick" />
-            <img class="nm-icon px-2" src="svg/bin-svgrepo-com.svg" @onclick="onDeleteClick" />
+            <img class="nm-icon px-3" src="svg/bin-svgrepo-com.svg" @onclick="onDeleteClick" />
         }
         else
         {
@@ -63,7 +63,7 @@
         showBackOnSelectClick = true;
         await SelectMultipleClick.InvokeAsync(true);
     }
-    private async void onBackClick()
+    public async void onBackClick()
     {
         isSelectClicked = false;
         showBackOnSelectClick = false;

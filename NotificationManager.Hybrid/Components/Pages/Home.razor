@@ -6,18 +6,18 @@
 @inject IApplicationRepository _applicationRepository
 @inject INotificationService _notificationService
 
-<TitleBar SelectMultipleClick="selectAppAction" SelectAll="selectAllApp" DeleteItem="deleteSelectedItem" />
+<TitleBar @ref="titleBar" SelectMultipleClick="selectAppAction" SelectAll="selectAllApp" DeleteItem="showDeleteAlertBox" />
 
 <div class="cmp-element container" style="padding-top: 15px;">
-    <Dialog Title="Delete Alert!" Opened="showDeleteAlert">
+    <Dialog Title="Delete Alert!" Opened="showDeleteAlert" CloseButtonClicked="@(() => showDeleteAlert = false)">
         <BodyContent>
-            <p style="font-size: 20px;">
+            <p style="font-size: 16px;">
                 Are you sure you want to delete all the notifications for the selected apps?
             </p>
         </BodyContent>
 
         <FooterContent>
-            <button class="ok-button">yes</button>
+            <button class="btn ok-button" @onclick="DeleteSelectedNotification">Yes</button>
         </FooterContent>
     </Dialog>
     @foreach (var app in appLists)
@@ -80,7 +80,9 @@
     private bool showSelectCheckbox = false;
     private bool selectAllCheckbox = false;
     private bool showDeleteAlert = false;
+    private bool reverseTitlebar { get; set; }
     private List<string> packageList = new List<string>();
+    TitleBar titleBar;
 
     protected override async Task OnInitializedAsync()
     {
@@ -109,9 +111,21 @@
         else packageList.Remove(package);
     }
 
-    private async void deleteSelectedItem()
+    private void showDeleteAlertBox()
     {
         showDeleteAlert = true;
+    }
+
+    private async void DeleteSelectedNotification()
+    {
         await _notificationService.DeleteAllNotification(packageList);
+
+        List<ApplicationViewDTO> AppWithZeroNotification = appLists.Where(app => packageList.Contains(app.PackageName)).ToList();
+        appLists = appLists.Except(AppWithZeroNotification).ToList();
+
+        packageList.Clear();
+        showDeleteAlert = false;
+        showSelectCheckbox = false;
+        titleBar.onBackClick();
     }
 }

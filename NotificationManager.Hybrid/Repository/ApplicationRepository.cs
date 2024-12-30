@@ -54,7 +54,8 @@ public class ApplicationRepository : IApplicationRepository
                 //ShowDefaultAppIcon = app.Icon == null ? true : false,
                 Count = await _notificationRepository.GetAppNotificationCount(app.Id)
             };
-            appsViewList.Add(notifCount);
+
+            if (notifCount.Count > 0) appsViewList.Add(notifCount);
         }
 
         return appsViewList;

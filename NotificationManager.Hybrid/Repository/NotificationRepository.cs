@@ -44,29 +44,12 @@ public class NotificationRepository : INotificationRepository
         return await _databaseContext.SaveChangesAsync();
     }
 
-    public async Task<List<ApplicationViewDTO>> GetUniqueAppNamesAsync()
+    public async Task<int> DeleteNotificationAsync(string package)
     {
-        List<NotificationDBO> appList = await _databaseContext.Notification.ToListAsync();
+        IQueryable<NotificationDBO> query = _databaseContext.Notification.Where(notif => notif.NotificationApp == package);
 
-        List<ApplicationDBO?> appLists = appList.Select(app => app.Application).Distinct().ToList();
-
-        List<ApplicationViewDTO> notificationCountList = new List<ApplicationViewDTO>();
-        foreach (ApplicationDBO? app in appLists) 
-        {
-            if (app == null) continue;
-
-            ApplicationViewDTO notifCount = new ApplicationViewDTO()
-            {
-                PackageName = app.Package,
-                AppName = app.Name,
-                AppLogo = app.Icon != null ? $"data:jpg;base64,${Convert.ToBase64String(app.Icon)}" : null,
-                //ShowDefaultAppIcon = app.Icon == null ? true : false,
-                Count = await GetAppNotificationCount(app.Id)
-            };
-            notificationCountList.Add(notifCount);
-        }
-
-        return notificationCountList;
+        _databaseContext.Notification.RemoveRange(query);
+        return await _databaseContext.SaveChangesAsync();
     }
 
     public async Task<int> GetAppNotificationCount(Guid appId)

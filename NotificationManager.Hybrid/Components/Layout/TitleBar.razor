@@ -14,8 +14,8 @@
     <div class="page-actions">
         @if (showBackOnSelectClick)
         {
-                <input type="checkbox" class="select-checkbox" style="padding-right:10px;" @onchange="onSelectAllClick" />
-                <img class="nm-icon px-2" src="svg/bin-svgrepo-com.svg" />
+            <input type="checkbox" class="select-checkbox" style="padding-right:10px;" @onchange="onSelectAllClick" />
+            <img class="nm-icon px-2" src="svg/bin-svgrepo-com.svg" @onclick="onDeleteClick" />
         }
         else
         {
@@ -51,6 +51,8 @@
     public EventCallback<bool> SelectMultipleClick { get; set; }
     [Parameter]
     public EventCallback<bool> SelectAll { get; set; }
+    [Parameter]
+    public EventCallback DeleteItem { get; set; }
 
     public bool isSelectClicked { get; set; } = false;
     public bool showBackOnSelectClick = false;
@@ -71,5 +73,10 @@
     private async void onSelectAllClick(ChangeEventArgs args)
     {
         await SelectAll.InvokeAsync((bool)args.Value);
+    }
+
+    private async void onDeleteClick()
+    {
+        await DeleteItem.InvokeAsync();
     }
 }

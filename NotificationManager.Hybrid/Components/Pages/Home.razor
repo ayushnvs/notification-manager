@@ -1,10 +1,12 @@
 ﻿@page "/"
 @using NotificationManager.Entities.DTO
 @using NotificationManager.Hybrid.Components.Layout
+@using NotificationManager.Hybrid.Service.Interface
 @using NotificationManager.Repository.Interfaces
 @inject IApplicationRepository _applicationRepository
+@inject INotificationService _notificationService
 
-<TitleBar SelectMultipleClick="selectAppAction" SelectAll="selectAllApp" />
+<TitleBar SelectMultipleClick="selectAppAction" SelectAll="selectAllApp" DeleteItem="deleteSelectedItem" />
 
 <div class="cmp-element container" style="padding-top: 15px;">
     @foreach (var app in appLists)
@@ -15,11 +17,11 @@
                 {
                     @if (selectAllCheckbox)
                     {
-                        <input type="checkbox" class="select-checkbox" data-package="@app.PackageName" @onchange="appSelected" checked/>
+                        <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => appSelected(app.PackageName, (bool)args.Value)" checked />
                     }
                     else
                     {
-                        <input type="checkbox" class="select-checkbox" data-package="@app.PackageName" @onchange="appSelected" />
+                        <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => appSelected(app.PackageName, (bool)args.Value)" />
                     }
                 }
                 <div class="app-icon">
@@ -66,6 +68,7 @@
     private List<ApplicationViewDTO> appLists;
     private bool showSelectCheckbox = false;
     private bool selectAllCheckbox = false;
+    private bool showDeleteAlert = false;
     private List<string> packageList = new List<string>();
 
     protected override async Task OnInitializedAsync()
@@ -81,15 +84,23 @@
     private void selectAllApp(bool value)
     {
         selectAllCheckbox = value;
+        if (value)
+            packageList = appLists.Select(app => app.PackageName).ToList();
+        else packageList.Clear();
     }
 
-    private void appSelected(ChangeEventArgs args)
+    private void appSelected(string package, bool IsChecked)
     {
-        if ((bool)args.Value)
+        if (IsChecked)
         {
-            string package = args.Target.Attributes["data-package"]?.Value;
             packageList.Add(package);
         }
-        else packageList.Remove(packageList);
+        else packageList.Remove(package);
+    }
+
+    private async void deleteSelectedItem()
+    {
+        showDeleteAlert = true;
+        await _notificationService.DeleteAllNotification(packageList);
     }
 }

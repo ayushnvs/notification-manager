@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using NotificationManager.Database;
+using NotificationManager.Hybrid.Service;
+using NotificationManager.Hybrid.Service.Interface;
 using NotificationManager.Repository;
 using NotificationManager.Repository.Interfaces;
 
@@ -28,8 +30,12 @@ public static class MauiProgram
         dbContext.Database.EnsureCreated();
         dbContext.Dispose();
 
+        // Register Repositories
         builder.Services.AddSingleton<INotificationRepository, NotificationRepository>();
         builder.Services.AddSingleton<IApplicationRepository, ApplicationRepository>();
+
+        // Register Services
+        builder.Services.AddSingleton<INotificationService, NotificationService>();
         builder.Services.AddSingleton<MainPage>();
 
         return builder.Build();

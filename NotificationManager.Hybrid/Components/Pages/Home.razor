@@ -7,7 +7,7 @@
 @inject IApplicationRepository _applicationRepository
 @inject INotificationService _notificationService
 
-<TitleBar @ref="titleBar" PageTitle="Application" SelectMultipleClick="selectAppAction" SelectAll="selectAllApp" DeleteItem="showDeleteAlertBox" />
+<TitleBar @ref="titleBar" PageTitle="Application" OnSelectMultipleClick="selectAppAction" OnSelectAllItem="selectAllApp" OnDeleteItem="showDeleteAlertBox" />
 
 <div class="cmp-element container" style="padding-top: 15px;">
     <Dialog Title="Delete Alert!" Opened="showDeleteAlert" CloseButtonClicked="@(() => showDeleteAlert = false)">
@@ -111,7 +111,7 @@
         packageList.Clear();
         showDeleteAlert = false;
         showSelectCheckbox = false;
-        titleBar.onBackClick();
+        titleBar.BackClick();
     }
 
     private void NavigateToNotification(string package, string appName)

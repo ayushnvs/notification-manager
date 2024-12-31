@@ -2,7 +2,7 @@
     <div class="page-title">
         @if (showBackOnSelectClick)
         {
-            <img class="nm-icon px-2" src="svg/back-svgrepo-com.svg" @onclick="onBackClick" />
+            <img class="nm-icon px-2" src="svg/back-svgrepo-com.svg" @onclick="BackClick" />
             <div style="padding-left: 10px">Select Multiple</div>
         }
         else
@@ -14,14 +14,14 @@
     <div class="page-actions">
         @if (showBackOnSelectClick)
         {
-            <input type="checkbox" class="select-checkbox" style="padding-right:10px;" @onchange="onSelectAllClick" />
-            <img class="nm-icon px-3" src="svg/bin-svgrepo-com.svg" @onclick="onDeleteClick" />
+            <input type="checkbox" class="select-checkbox" style="padding-right:10px;" @onchange="SelectAllClick" />
+            <img class="nm-icon px-3" src="svg/bin-svgrepo-com.svg" @onclick="DeleteClick" />
         }
         else
         {
             <img class="nm-icon px-2" src="svg/search-svgrepo-com.svg" />
             <img class="nm-icon px-2" src="svg/refresh-2-svgrepo-com.svg" />
-            <img class="nm-icon px-2" src="svg/select-multiple-svgrepo-com.svg" @onclick="selectOnClick" />
+            <img class="nm-icon px-2" src="svg/select-multiple-svgrepo-com.svg" @onclick="SelectMultipleClick" />
         }
     </div>
 </div>
@@ -48,33 +48,33 @@
 
 @code {
     [Parameter] public string PageTitle { get; set; } = "Home";
-    [Parameter] public EventCallback<bool> SelectMultipleClick { get; set; }
-    [Parameter] public EventCallback<bool> SelectAll { get; set; }
-    [Parameter] public EventCallback DeleteItem { get; set; }
+    [Parameter] public EventCallback<bool> OnSelectMultipleClick { get; set; }
+    [Parameter] public EventCallback<bool> OnSelectAllItem { get; set; }
+    [Parameter] public EventCallback OnDeleteItem { get; set; }
     public bool isSelectClicked { get; set; } = false;
     public bool showBackOnSelectClick = false;
     public bool isSelectAllChecked = false;
 
-    private async void selectOnClick()
+    private async void SelectMultipleClick()
     {
         isSelectClicked = true;
         showBackOnSelectClick = true;
-        await SelectMultipleClick.InvokeAsync(true);
+        await OnSelectMultipleClick.InvokeAsync(true);
     }
-    public async void onBackClick()
+    public async void BackClick()
     {
         isSelectClicked = false;
         showBackOnSelectClick = false;
-        await SelectMultipleClick.InvokeAsync(false);
+        await OnSelectMultipleClick.InvokeAsync(false);
     }
 
-    private async void onSelectAllClick(ChangeEventArgs args)
+    private async void SelectAllClick(ChangeEventArgs args)
     {
-        await SelectAll.InvokeAsync((bool)args.Value);
+        await OnSelectAllItem.InvokeAsync((bool)args.Value);
     }
 
-    private async void onDeleteClick()
+    private async void DeleteClick()
     {
-        await DeleteItem.InvokeAsync();
+        await OnDeleteItem.InvokeAsync();
     }
 }

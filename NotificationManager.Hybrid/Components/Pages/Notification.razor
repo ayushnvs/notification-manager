@@ -54,7 +54,7 @@
 
 @code {
     [Parameter] public string Package { get; set; }
-    [Parameter] public string AppName { get; set; }
+    [Parameter] public string AppName { get; set; } = "Notification";
     private List<NotificationDBO> notificationList { get; set; }
     private List<Guid> notificationIdList = new List<Guid>();
     private bool showSelectCheckbox = false;

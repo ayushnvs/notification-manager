@@ -20,7 +20,7 @@
         else
         {
             <img class="nm-icon px-2" src="svg/search-svgrepo-com.svg" />
-            <img class="nm-icon px-2" src="svg/refresh-2-svgrepo-com.svg" />
+            <img class="nm-icon px-2" src="svg/refresh-2-svgrepo-com.svg" @onclick="RefreshClick"/>
             <img class="nm-icon px-2" src="svg/select-multiple-svgrepo-com.svg" @onclick="SelectMultipleClick" />
         }
     </div>
@@ -51,9 +51,15 @@
     [Parameter] public EventCallback<bool> OnSelectMultipleClick { get; set; }
     [Parameter] public EventCallback<bool> OnSelectAllItem { get; set; }
     [Parameter] public EventCallback OnDeleteItem { get; set; }
+    [Parameter] public EventCallback OnRefreshClick { get; set; }
     public bool isSelectClicked { get; set; } = false;
     public bool showBackOnSelectClick = false;
     public bool isSelectAllChecked = false;
+
+    private async void RefreshClick()
+    {
+        await OnRefreshClick.InvokeAsync();
+    }
 
     private async void SelectMultipleClick()
     {

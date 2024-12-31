@@ -1,10 +1,9 @@
-﻿using NotificationManager.Database;
-using NotificationManager.Entities.Models;
-using NotificationManager.Repository.Interfaces;
-using NotificationManager.Entities.DTO;
+﻿using NotificationManager.Hybrid.Database;
+using NotificationManager.Hybrid.Entities.Models;
+using NotificationManager.Hybrid.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace NotificationManager.Repository;
+namespace NotificationManager.Hybrid.Repository;
 
 public class NotificationRepository : INotificationRepository
 {

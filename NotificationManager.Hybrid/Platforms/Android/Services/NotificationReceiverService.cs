@@ -2,11 +2,11 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
-using NotificationManager.Entities.Models;
-using NotificationManager.Platforms.Android.Helpers;
-using NotificationManager.Repository.Interfaces;
+using NotificationManager.Hybrid.Entities.Models;
+using NotificationManager.Hybrid.Platforms.Android.Helpers;
+using NotificationManager.Hybrid.Repository.Interfaces;
 
-namespace NotificationManager.Platforms.Android.Services;
+namespace NotificationManager.Hybrid.Platforms.Android.Services;
 
 [BroadcastReceiver(Enabled = true, Permission = "android.Manifest.Permission.RECEIVE_BOOT_COMPLETED")]
 [IntentFilter(["intentNotificationRecieved"])]
@@ -79,7 +79,7 @@ public class NotificationReceiverService : BroadcastReceiver
                 NotificationText = text,
                 NotificationApp = packageName,
                 ApplicationId = newApplication.Id,
-                RecievedOn = new DateTime(timestamp.Value)
+                RecievedOn = DateTimeHelper.FromTimestamp(timestamp.Value)
             };
 
             await _notificationRepository.SaveNotificationAsync(notification);
@@ -92,7 +92,7 @@ public class NotificationReceiverService : BroadcastReceiver
                 NotificationText = text,
                 NotificationApp = packageName,
                 ApplicationId = application.Id,
-                RecievedOn = new DateTime(timestamp.Value)
+                RecievedOn = DateTimeHelper.FromTimestamp(timestamp.Value)
             };
 
             await _notificationRepository.SaveNotificationAsync(notification);

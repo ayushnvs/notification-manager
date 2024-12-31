@@ -1,4 +1,4 @@
-﻿namespace NotificationManager.Entities.DTO;
+﻿namespace NotificationManager.Hybrid.Entities.DTO;
 
 public class ApplicationViewDTO
 {

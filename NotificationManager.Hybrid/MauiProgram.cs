@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using NotificationManager.Database;
+using NotificationManager.Hybrid.Database;
 using NotificationManager.Hybrid.Service;
 using NotificationManager.Hybrid.Service.Interface;
-using NotificationManager.Repository;
-using NotificationManager.Repository.Interfaces;
+using NotificationManager.Hybrid.Repository;
+using NotificationManager.Hybrid.Repository.Interfaces;
 
 namespace NotificationManager.Hybrid;
 

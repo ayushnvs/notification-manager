@@ -1,13 +1,24 @@
 ﻿@page "/notification/{package}/{appname}"
 @using NotificationManager.Hybrid.Components.Snippets
 @using NotificationManager.Hybrid.Components.Style
-@using NotificationManager.Repository.Interfaces
-@using NotificationManager.Entities.Models
-@inject INotificationRepository _notificationRepository
+@using NotificationManager.Hybrid.Service.Interface
+@using NotificationManager.Hybrid.Entities.Models
+@inject INotificationService _notificationService
 
-<TitleBar PageTitle="@AppName" />
+<TitleBar @ref="titleBar" PageTitle="@AppName" OnSelectMultipleClick="ShowSelectAction" OnSelectAllItem="SelectAllApp" OnDeleteItem="ShowDeleteAlertBox" OnRefreshClick="RefreshPage" />
 
 <div class="cmp-element container" style="padding-top: 15px;">
+    <Dialog Title="Delete Alert!" Opened="showDeleteAlert" CloseButtonClicked="@(() => showDeleteAlert = false)">
+        <BodyContent>
+            <p style="font-size: 16px;">
+                Are you sure you want to delete the selected notifications?
+            </p>
+        </BodyContent>
+
+        <FooterContent>
+            <button class="btn ok-button" @onclick="DeleteSelectedNotification">Yes</button>
+        </FooterContent>
+    </Dialog>
     @foreach(var notification in notificationList)
     {
         <div class="notif-data-container px-2 py-2" >
@@ -59,10 +70,17 @@
     private List<Guid> notificationIdList = new List<Guid>();
     private bool showSelectCheckbox = false;
     private bool selectAllCheckbox = false;
+    private bool showDeleteAlert = false; 
+    private TitleBar titleBar;
 
     protected override async Task OnInitializedAsync()
     {
-        notificationList = await _notificationRepository.GetNotificationsAsync(Package);
+        notificationList = await _notificationService.GetNotificationsAsync(Package);
+    }
+
+    private async Task RefreshPage()
+    {
+        notificationList = await _notificationService.GetNotificationsAsync(Package);
     }
 
     private void itemSelected(Guid id, bool IsChecked)
@@ -72,5 +90,36 @@
             notificationIdList.Add(id);
         }
         else notificationIdList.Remove(id);
+    }
+
+    private void ShowSelectAction(bool value)
+    {
+        showSelectCheckbox = value;
+    }
+
+    private void SelectAllApp(bool value)
+    {
+        selectAllCheckbox = value;
+        if (value)
+            notificationIdList = notificationList.Select(notif => notif.Id).ToList();
+        else notificationIdList.Clear();
+    }
+
+    private void ShowDeleteAlertBox()
+    {
+        showDeleteAlert = true;
+    }
+
+    private async void DeleteSelectedNotification()
+    {
+        await _notificationService.DeleteNotificationAsync(notificationIdList);
+
+        List<NotificationDBO> deletedNotification = notificationList.Where(notif => notificationIdList.Contains(notif.Id)).ToList();
+        notificationList = notificationList.Except(deletedNotification).ToList();
+
+        notificationIdList.Clear();
+        showDeleteAlert = false;
+        showSelectCheckbox = false;
+        titleBar.BackClick();
     }
 }

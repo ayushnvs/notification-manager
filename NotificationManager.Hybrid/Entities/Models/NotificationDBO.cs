@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NotificationManager.Entities.Models;
+namespace NotificationManager.Hybrid.Entities.Models;
 
 [Table("notification")]
 public class NotificationDBO

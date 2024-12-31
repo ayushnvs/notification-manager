@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NotificationManager.Entities.Models;
+using NotificationManager.Hybrid.Entities.Models;
 
-namespace NotificationManager.Database;
+namespace NotificationManager.Hybrid.Database;
 
 public class DatabaseContext : DbContext
 {

@@ -1,7 +1,7 @@
-﻿using NotificationManager.Entities.DTO;
-using NotificationManager.Entities.Models;
+﻿using NotificationManager.Hybrid.Entities.DTO;
+using NotificationManager.Hybrid.Entities.Models;
 
-namespace NotificationManager.Repository.Interfaces;
+namespace NotificationManager.Hybrid.Repository.Interfaces;
 
 public interface IApplicationRepository
 {

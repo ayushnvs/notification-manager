@@ -1,5 +1,4 @@
-﻿using NotificationManager.Entities.Models;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NotificationManager.Hybrid.Entities.Models;
 

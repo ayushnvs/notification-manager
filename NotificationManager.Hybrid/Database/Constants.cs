@@ -1,4 +1,4 @@
-﻿namespace NotificationManager.Database;
+﻿namespace NotificationManager.Hybrid.Database;
 
 public static class Constants
 {

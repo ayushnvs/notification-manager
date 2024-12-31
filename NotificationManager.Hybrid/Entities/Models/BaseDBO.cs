@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NotificationManager.Entities.Models;
+namespace NotificationManager.Hybrid.Entities.Models;
 
 public class BaseDBO
 {

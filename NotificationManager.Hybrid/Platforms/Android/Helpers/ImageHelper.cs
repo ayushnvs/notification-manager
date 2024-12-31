@@ -1,7 +1,7 @@
 ﻿using Android.Graphics;
 using Android.Graphics.Drawables;
 
-namespace NotificationManager.Platforms.Android.Helpers;
+namespace NotificationManager.Hybrid.Platforms.Android.Helpers;
 
 public class ImageHelper
 {

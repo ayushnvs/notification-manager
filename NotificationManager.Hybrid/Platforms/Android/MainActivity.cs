@@ -5,7 +5,7 @@ using Android.OS;
 using Android.Provider;
 using Android.Text;
 using Android.Widget;
-using NotificationManager.Platforms.Android.Services;
+using NotificationManager.Hybrid.Platforms.Android.Services;
 
 namespace NotificationManager.Hybrid;
 

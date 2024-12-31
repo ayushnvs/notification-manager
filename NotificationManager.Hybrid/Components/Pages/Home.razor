@@ -1,13 +1,13 @@
 ﻿@page "/"
-@using NotificationManager.Entities.DTO
+@using NotificationManager.Hybrid.Entities.DTO
 @using NotificationManager.Hybrid.Components.Snippets
 @using NotificationManager.Hybrid.Components.Style
+@using NotificationManager.Hybrid.Repository.Interfaces
 @using NotificationManager.Hybrid.Service.Interface
-@using NotificationManager.Repository.Interfaces
 @inject IApplicationRepository _applicationRepository
 @inject INotificationService _notificationService
 
-<TitleBar @ref="titleBar" PageTitle="Application" OnSelectMultipleClick="selectAppAction" OnSelectAllItem="selectAllApp" OnDeleteItem="showDeleteAlertBox" />
+<TitleBar @ref="titleBar" PageTitle="Application" OnSelectMultipleClick="selectAppAction" OnSelectAllItem="selectAllApp" OnDeleteItem="showDeleteAlertBox" OnRefreshClick="RefreshPage" />
 
 <div class="cmp-element container" style="padding-top: 15px;">
     <Dialog Title="Delete Alert!" Opened="showDeleteAlert" CloseButtonClicked="@(() => showDeleteAlert = false)">
@@ -59,17 +59,22 @@
 </div>
 
 @code {
-    private List<ApplicationViewDTO> appLists;
+    private List<ApplicationViewDTO> appLists { get; set; }
     private bool showSelectCheckbox = false;
     private bool selectAllCheckbox = false;
     private bool showDeleteAlert = false;
     private bool reverseTitlebar { get; set; }
     private List<string> packageList = new List<string>();
-    TitleBar titleBar;
+    private TitleBar titleBar;
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
     protected override async Task OnInitializedAsync()
+    {
+        appLists = await _applicationRepository.GetAllApplicationAsync();
+    }
+
+    private async Task RefreshPage() 
     {
         appLists = await _applicationRepository.GetAllApplicationAsync();
     }

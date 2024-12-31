@@ -2,7 +2,7 @@
 using Android.Content;
 using Android.Service.Notification;
 
-namespace NotificationManager.Platforms.Android.Services;
+namespace NotificationManager.Hybrid.Platforms.Android.Services;
 
 [Service(Name = "NotificationManager.Platforms.Android.Services.NotificationBroadcasterService", Enabled = true, Exported = false, Permission = "android.permission.BIND_NOTIFICATION_LISTENER_SERVICE")]
 [IntentFilter(["android.service.notification.NotificationListenerService"])]

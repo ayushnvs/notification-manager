@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NotificationManager.Entities.Models;
+namespace NotificationManager.Hybrid.Entities.Models;
 
 public class ApplicationDBO : BaseDBO
 {

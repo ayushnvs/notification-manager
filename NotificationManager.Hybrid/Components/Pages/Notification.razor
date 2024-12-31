@@ -10,35 +10,73 @@
     @foreach(var notification in notificationList)
     {
         <div class="notif-data-container px-2 py-2" >
-            <div class="list-header-content">
-                @if (showSelectCheckbox)
-                {
-                    @if (selectAllCheckbox)
+            <div class="row-1">
+                <div class="list-header-content">
+                    @if (showSelectCheckbox)
                     {
-                        <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => itemSelected(notification.Id, (bool)args.Value)" checked />
+                        @if (selectAllCheckbox)
+                        {
+                            <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => itemSelected(notification.Id, (bool)args.Value)" checked />
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => itemSelected(notification.Id, (bool)args.Value)" />
+                        }
                     }
-                    else
-                    {
-                        <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => itemSelected(notification.Id, (bool)args.Value)" />
-                    }
-                }
-                <div class="app-icon">
-                    @if (notification.Application.Icon != null)
-                    {
-                        <img src="@($"data:image /jpeg;base64,{Convert.ToBase64String(notification.Application.Icon)}")" />
-                    }
-                    else
-                    {
-                        <img src="default_icon_2.png" />
-                    }
+                    <div class="app-icon">
+                        @if (notification.Application.Icon != null)
+                        {
+                            <img src="@($"data:image /jpeg;base64,{Convert.ToBase64String(notification.Application.Icon)}")" />
+                        }
+                        else
+                        {
+                            <img src="default_icon_2.png" />
+                        }
+                    </div>
+                    <div class="notif-title">@notification.NotificationTitle</div>
+                </div>
+                <div class="notif-time">
+                    @notification.RecievedOn.ToString("dd MMM HH:MM")
                 </div>
             </div>
-            <div class="list-content">
-                <div class="app-name">@notification.NotificationTitle</div>
+            <div class="row-2">
+                <div class="list-header-content">
+                    <div class="notif-text">@notification.NotificationText</div>
+                </div>
             </div>
         </div>
         <hr style="width:100%;text-align:center;color:silver;">
     }
+
+    <style>
+        .notif-data-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .list-header-content, [class*="row-"] {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        }
+
+        .app-icon > img {
+        height: 25px;
+        width: 25px;
+        border-radius: 40%;
+        }
+
+        .notif-title {
+            font-size: 20px;
+        }
+
+        .notif-text {
+            padding-left: 35px;
+            font-size: 18px;
+        }
+    </style>
 </div>
 
 @code {

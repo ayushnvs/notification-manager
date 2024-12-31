@@ -1,0 +1,14 @@
+﻿@if (StyleFormat == StyleFormat.Format1)
+{
+    <Format1 CurrentPage="@CurrentPage" />
+}
+
+@if (StyleFormat == StyleFormat.Format2)
+{
+    <Format2 CurrentPage="@CurrentPage" />
+}
+
+@code {
+    [Parameter] public Page CurrentPage { get; set; }
+    [Parameter] public StyleFormat StyleFormat { get; set; }
+}

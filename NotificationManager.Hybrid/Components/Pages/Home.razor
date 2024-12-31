@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using NotificationManager.Entities.DTO
 @using NotificationManager.Hybrid.Components.Snippets
+@using NotificationManager.Hybrid.Components.Style
 @using NotificationManager.Hybrid.Service.Interface
 @using NotificationManager.Repository.Interfaces
 @inject IApplicationRepository _applicationRepository
@@ -54,25 +55,7 @@
         <hr style="width:100%;text-align:center;color:silver;">
     }
 
-    <style>
-        .app-data-container, .list-content, .list-header-content {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 10px;
-        }
-
-        .app-icon > img {
-        height: 35px;
-        width: 35px;
-        border-radius: 40%;
-        }
-
-        .list-content {
-        width: 100%;
-        justify-content: space-between;
-        }
-    </style>
+    <PageStyle CurrentPage="@Page.Home" StyleFormat="StyleFormat.Format1"/>
 </div>
 
 @code {

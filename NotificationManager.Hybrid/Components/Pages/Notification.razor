@@ -1,5 +1,6 @@
 ﻿@page "/notification/{package}/{appname}"
 @using NotificationManager.Hybrid.Components.Snippets
+@using NotificationManager.Hybrid.Components.Style
 @using NotificationManager.Repository.Interfaces
 @using NotificationManager.Entities.Models
 @inject INotificationRepository _notificationRepository
@@ -48,35 +49,7 @@
         <hr style="width:100%;text-align:center;color:silver;">
     }
 
-    <style>
-        .notif-data-container {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .list-header-content, [class*="row-"] {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        }
-
-        .app-icon > img {
-        height: 25px;
-        width: 25px;
-        border-radius: 40%;
-        }
-
-        .notif-title {
-            font-size: 20px;
-        }
-
-        .notif-text {
-            padding-left: 35px;
-            font-size: 18px;
-        }
-    </style>
+    <PageStyle CurrentPage="@Page.Notification" StyleFormat="StyleFormat.Format2"/>
 </div>
 
 @code {

@@ -10,33 +10,43 @@
         <ScrollView>
             <VerticalStackLayout Padding="0,0" Spacing="100">
 
-                <ListView x:Name="listView" 
-                          ItemsSource="{Binding AppNames}"
-                          RowHeight="75"
-                          SeparatorColor="Silver"
-                          ItemSelected="OnAppSelected"
-                          ItemTapped="OnAppTapped">
-                    <ListView.ItemTemplate>
+                <CollectionView x:Name="collectionView" 
+                          ItemsSource="{Binding AppNames}">
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <Grid RowDefinitions="*" ColumnDefinitions="4*, *">
+                            <StackLayout>
+                                <Grid RowDefinitions="*" ColumnDefinitions="*, 4*, *" Margin="0, 10">
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnAppTapped" />
+                                    </Grid.GestureRecognizers>
+                                    <Image Source="{Binding AppLogo}"
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            WidthRequest="45"/>
+                                    <Image Source="default_icon.png"
+                                            x:Name="xamlDefaultAppImage"
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            IsVisible="{Binding ShowDefaultAppIcon}"/>
                                     <Label Text="{Binding AppName}"
-                                           Grid.Row="0"
-                                           Grid.Column="0"
-                                           FontSize="18"
-                                           VerticalOptions="Center"
-                                           Padding="10, 0"/>
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            FontSize="18"
+                                            VerticalOptions="Center"
+                                            Padding="10, 0"/>
                                     <Label Text="{Binding Count}"
-                                           Grid.Row="0"
-                                           Grid.Column="1"
-                                           FontSize="18"
-                                           VerticalOptions="Center"
-                                           Padding="10, 0"/>
+                                            Grid.Row="0"
+                                            Grid.Column="2"
+                                            FontSize="18"
+                                            VerticalOptions="Center"
+                                            Padding="10, 0"/>
                                 </Grid>
-                            </ViewCell>
+                                <BoxView HeightRequest="1" BackgroundColor="Silver" />
+                            </StackLayout>
+
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
                 
             </VerticalStackLayout>
         </ScrollView>

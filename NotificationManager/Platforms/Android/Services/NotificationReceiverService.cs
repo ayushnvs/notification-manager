@@ -1,7 +1,9 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Graphics.Drawables;
 using NotificationManager.Entities.Models;
+using NotificationManager.Platforms.Android.Helpers;
 using NotificationManager.Repository.Interfaces;
 
 namespace NotificationManager.Platforms.Android.Services;
@@ -11,10 +13,12 @@ namespace NotificationManager.Platforms.Android.Services;
 public class NotificationReceiverService : BroadcastReceiver
 {
     private readonly INotificationRepository _notificationRepository;
+    private readonly IApplicationRepository _applicationRepository;
 
     public NotificationReceiverService()
     {
         _notificationRepository = ServiceProvider.GetService<INotificationRepository>();
+        _applicationRepository = ServiceProvider.GetService<IApplicationRepository>();
     }
 
     public async override void OnReceive(Context? context, Intent? intent)
@@ -29,28 +33,51 @@ public class NotificationReceiverService : BroadcastReceiver
         if (title == null && text == null) return;
         if (packageName == null) return;
 
-
-        PackageManager? packageManager = context?.PackageManager;
-        if (packageManager == null) return;
-
-        ApplicationInfo applicationInfo;
-        try
+        ApplicationDBO? application = await _applicationRepository.GetApplicationAsync(packageName);
+        if (application == null)
         {
-            applicationInfo = packageManager.GetApplicationInfo(packageName, 0);
-        }
-        catch (PackageManager.NameNotFoundException)
-        {
-            return;
-        }
+            PackageManager? packageManager = context?.PackageManager;
+            if (packageManager == null) return;
 
-        string appName = packageManager.GetApplicationLabel(applicationInfo);
+            ApplicationInfo applicationInfo;
+            try
+            {
+                applicationInfo = packageManager.GetApplicationInfo(packageName, 0);
+            }
+            catch (PackageManager.NameNotFoundException)
+            {
+                //TODO: Handle missed notification due to null ApplicationInfo
+                return;
+            }
 
+            string? appName = null;
+            Drawable? appLogo = null;
+            if (applicationInfo != null)
+            {
+                appName = packageManager.GetApplicationLabel(applicationInfo);
+                appLogo = packageManager.GetApplicationLogo(applicationInfo);
+                if (appLogo == null)
+                {
+                    appLogo = applicationInfo.LoadIcon(packageManager);
+                }
+            }
+
+            application = new ApplicationDBO()
+            {
+                Name = appName,
+                Package = packageName,
+                Icon = appLogo != null ? ImageHelper.DrawableToByteArray(appLogo) : null
+            };
+
+            await _applicationRepository.SaveApplicationAsync(application);
+        }
 
         NotificationDBO notification = new NotificationDBO
         {
             NotificationTitle = title,
             NotificationText = text,
             NotificationApp = packageName,
+            ApplicationId = application.Id,
             RecievedOn = new DateTime(timestamp.Value)
         };
 

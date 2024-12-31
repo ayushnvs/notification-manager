@@ -1,0 +1,129 @@
+﻿@page "/"
+@using NotificationManager.Entities.DTO
+@using NotificationManager.Hybrid.Components.Snippets
+@using NotificationManager.Hybrid.Components.Style
+@using NotificationManager.Hybrid.Service.Interface
+@using NotificationManager.Repository.Interfaces
+@inject IApplicationRepository _applicationRepository
+@inject INotificationService _notificationService
+
+<TitleBar @ref="titleBar" PageTitle="Application" SelectMultipleClick="selectAppAction" SelectAll="selectAllApp" DeleteItem="showDeleteAlertBox" />
+
+<div class="cmp-element container" style="padding-top: 15px;">
+    <Dialog Title="Delete Alert!" Opened="showDeleteAlert" CloseButtonClicked="@(() => showDeleteAlert = false)">
+        <BodyContent>
+            <p style="font-size: 16px;">
+                Are you sure you want to delete all the notifications for the selected apps?
+            </p>
+        </BodyContent>
+
+        <FooterContent>
+            <button class="btn ok-button" @onclick="DeleteSelectedNotification">Yes</button>
+        </FooterContent>
+    </Dialog>
+    @foreach (var app in appLists)
+    {
+        <div class="app-data-container px-2 py-2" @onclick="() => NavigateToNotification(app.PackageName, app.AppName)">
+            <div class="list-header-content">
+                @if (showSelectCheckbox)
+                {
+                    @if (selectAllCheckbox)
+                    {
+                        <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => appSelected(app.PackageName, (bool)args.Value)" checked />
+                    }
+                    else
+                    {
+                        <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => appSelected(app.PackageName, (bool)args.Value)" />
+                    }
+                }
+                <div class="app-icon">
+                    @if (app.AppLogo != null)
+                    {
+                        <img src="@app.AppLogo" />
+                    }
+                    else
+                    {
+                        <img src="default_icon_2.png" />
+                    }
+                </div>
+            </div>
+            <div class="list-content">
+                <div class="app-name">@app.AppName</div>
+                <div class="notification-count">@app.Count</div>
+            </div>
+        </div>
+        <hr style="width:100%;text-align:center;color:silver;">
+    }
+
+    <PageStyle CurrentPage="@Page.Home" StyleFormat="StyleFormat.Format1"/>
+</div>
+
+@code {
+    private List<ApplicationViewDTO> appLists;
+    private bool showSelectCheckbox = false;
+    private bool selectAllCheckbox = false;
+    private bool showDeleteAlert = false;
+    private bool reverseTitlebar { get; set; }
+    private List<string> packageList = new List<string>();
+    TitleBar titleBar;
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        appLists = await _applicationRepository.GetAllApplicationAsync();
+    }
+
+    private void selectAppAction(bool value)
+    {
+        showSelectCheckbox = value;
+    }
+
+    private void selectAllApp(bool value)
+    {
+        selectAllCheckbox = value;
+        if (value)
+            packageList = appLists.Select(app => app.PackageName).ToList();
+        else packageList.Clear();
+    }
+
+    private void appSelected(string package, bool IsChecked)
+    {
+        if (IsChecked)
+        {
+            packageList.Add(package);
+        }
+        else packageList.Remove(package);
+    }
+
+    private void showDeleteAlertBox()
+    {
+        showDeleteAlert = true;
+    }
+
+    private async void DeleteSelectedNotification()
+    {
+        await _notificationService.DeleteAllNotification(packageList);
+
+        List<ApplicationViewDTO> AppWithZeroNotification = appLists.Where(app => packageList.Contains(app.PackageName)).ToList();
+        appLists = appLists.Except(AppWithZeroNotification).ToList();
+
+        packageList.Clear();
+        showDeleteAlert = false;
+        showSelectCheckbox = false;
+        titleBar.onBackClick();
+    }
+
+    private void NavigateToNotification(string package, string appName)
+    {
+        if(!showSelectCheckbox)
+        {
+            NavigationManager.NavigateTo($"/notification/{package}/{appName}");
+        }
+        else
+        {
+            // TODO: Handle Select Checkbox
+        }
+    }
+    // TODO: ISSUE-Dialog box is appearing with no app selected to disappear
+}

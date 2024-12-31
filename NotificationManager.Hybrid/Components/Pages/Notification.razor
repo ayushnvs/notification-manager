@@ -1,0 +1,76 @@
+﻿@page "/notification/{package}/{appname}"
+@using NotificationManager.Hybrid.Components.Snippets
+@using NotificationManager.Hybrid.Components.Style
+@using NotificationManager.Repository.Interfaces
+@using NotificationManager.Entities.Models
+@inject INotificationRepository _notificationRepository
+
+<TitleBar PageTitle="@AppName" />
+
+<div class="cmp-element container" style="padding-top: 15px;">
+    @foreach(var notification in notificationList)
+    {
+        <div class="notif-data-container px-2 py-2" >
+            <div class="row-1">
+                <div class="list-header-content">
+                    @if (showSelectCheckbox)
+                    {
+                        @if (selectAllCheckbox)
+                        {
+                            <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => itemSelected(notification.Id, (bool)args.Value)" checked />
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => itemSelected(notification.Id, (bool)args.Value)" />
+                        }
+                    }
+                    <div class="app-icon">
+                        @if (notification.Application.Icon != null)
+                        {
+                            <img src="@($"data:image /jpeg;base64,{Convert.ToBase64String(notification.Application.Icon)}")" />
+                        }
+                        else
+                        {
+                            <img src="default_icon_2.png" />
+                        }
+                    </div>
+                    <div class="notif-title">@notification.NotificationTitle</div>
+                </div>
+                <div class="notif-time">
+                    @notification.RecievedOn.ToString("dd MMM HH:MM")
+                </div>
+            </div>
+            <div class="row-2">
+                <div class="list-header-content">
+                    <div class="notif-text">@notification.NotificationText</div>
+                </div>
+            </div>
+        </div>
+        <hr style="width:100%;text-align:center;color:silver;">
+    }
+
+    <PageStyle CurrentPage="@Page.Notification" StyleFormat="StyleFormat.Format2"/>
+</div>
+
+@code {
+    [Parameter] public string Package { get; set; }
+    [Parameter] public string AppName { get; set; }
+    private List<NotificationDBO> notificationList { get; set; }
+    private List<Guid> notificationIdList = new List<Guid>();
+    private bool showSelectCheckbox = false;
+    private bool selectAllCheckbox = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        notificationList = await _notificationRepository.GetNotificationsAsync(Package);
+    }
+
+    private void itemSelected(Guid id, bool IsChecked)
+    {
+        if (IsChecked)
+        {
+            notificationIdList.Add(id);
+        }
+        else notificationIdList.Remove(id);
+    }
+}

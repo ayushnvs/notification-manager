@@ -1,0 +1,58 @@
+﻿@if (CurrentPage == Page.Home)
+{
+    <style>
+        .app-data-container, .list-content, .list-header-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        }
+
+        .app-icon > img {
+        height: 35px;
+        width: 35px;
+        border-radius: 40%;
+        }
+
+        .list-content {
+        width: 100%;
+        justify-content: space-between;
+        }
+    </style>
+}
+@if(CurrentPage == Page.Notification)
+{
+    <style>
+        .notif-data-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .list-header-content, [class*="row-"] {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        }
+
+        .app-icon > img {
+        height: 25px;
+        width: 25px;
+        border-radius: 40%;
+        }
+
+        .notif-title {
+            font-size: 20px;
+        }
+
+        .notif-text {
+            padding-left: 35px;
+            font-size: 18px;
+        }
+    </style>
+}
+
+@code {
+    [Parameter] public Page CurrentPage { get; set; }
+}

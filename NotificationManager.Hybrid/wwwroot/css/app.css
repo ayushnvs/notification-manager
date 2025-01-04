@@ -73,6 +73,10 @@ h1:focus {
     height: 25px;
 }
 
+body hr {
+    margin: 0.5em;
+}
+
 @supports (-webkit-touch-callout: none) {
     .status-bar-safe-area {
         display: flex;

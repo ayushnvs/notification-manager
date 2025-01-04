@@ -1,26 +1,28 @@
 ﻿@if (CurrentPage == Page.Home)
 {
     <style>
-        .app-data-container, .list-content, .list-header-content {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 10px;
+        .app-data-container,
+        .list-content,
+        .list-header-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
         }
 
-        .app-icon > img {
-        height: 35px;
-        width: 35px;
-        border-radius: 40%;
+        .app-icon>img {
+            height: 35px;
+            width: 35px;
+            border-radius: 40%;
         }
 
         .list-content {
-        width: 100%;
-        justify-content: space-between;
+            width: 100%;
+            justify-content: space-between;
         }
     </style>
 }
-@if(CurrentPage == Page.Notification)
+@if (CurrentPage == Page.Notification)
 {
     <style>
         .notif-data-container {
@@ -28,18 +30,19 @@
             flex-direction: column;
         }
 
-        .list-header-content, [class*="row-"] {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
+        .list-header-content,
+        [class*="row-"] {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5em;
         }
 
-        .app-icon > img {
-        height: 25px;
-        width: 25px;
-        border-radius: 40%;
+        .app-icon>img {
+            height: 25px;
+            width: 25px;
+            border-radius: 40%;
         }
 
         .notif-title {

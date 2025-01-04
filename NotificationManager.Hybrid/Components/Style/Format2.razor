@@ -1,64 +1,67 @@
 ﻿@if (CurrentPage == Page.Home)
 {
-        <style>
-            .app-data-container, .list-content, .list-header-content {
+    <style>
+        .app-data-container,
+        .list-content,
+        .list-header-content {
             display: flex;
             flex-direction: row;
             align-items: center;
-            gap: 10px;
-            }
+            gap: 1.5em;
+        }
 
-            .app-icon > img {
+        .app-icon>img {
             height: 35px;
             width: 35px;
             border-radius: 40%;
-            }
+        }
 
-            .list-content {
+        .list-content {
             width: 100%;
             justify-content: space-between;
-            }
-        </style>
+        }
+    </style>
 }
 @if (CurrentPage == Page.Notification)
 {
-        <style>
-            .notif-data-container {
-                display: flex;
-                flex-direction: column;
-                gap:5px;
-            }
+    <style>
+        .notif-data-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
 
-            .list-header-content, [class*="row-"] {
+        .list-header-content,
+        [class*="row-"] {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            }
+        }
 
-            .app-icon > img {
+        .app-icon>img {
             height: 25px;
             width: 25px;
             border-radius: 40%;
-            }
+        }
 
-            .notif-title {
-                font-size: 16px;
-            }
+        .notif-title {
+            font-size: 16px;
+        }
 
-            .notif-text {
-                padding-left: 35px;
-                font-size: 14px;
-                text-align: justify;
-                text-wrap-style: balance;
-            }
+        .notif-text {
+            padding-left: 35px;
+            font-size: 14px;
+            text-align: justify;
+            text-wrap-style: balance;
+        }
 
-            .notif-time {
-                font-size: 14px;
-                text-wrap-mode: nowrap;
-            }
-        </style>
+        .notif-time {
+            font-size: 14px;
+            text-wrap-mode: nowrap;
+        }
+    </style>
 }
 
 @code {

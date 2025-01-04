@@ -9,7 +9,7 @@
 
 <TitleBar @ref="titleBar" PageTitle="Application" OnSelectMultipleClick="selectAppAction" OnSelectAllItem="selectAllApp" OnDeleteItem="showDeleteAlertBox" OnRefreshClick="RefreshPage" />
 
-<div class="cmp-element container" style="padding-top: 15px;">
+<div class="cmp-element container" style="margin-top: 4.5em; padding-top: 0.5em;">
     <Dialog Title="Delete Alert!" Opened="showDeleteAlert" CloseButtonClicked="@(() => showDeleteAlert = false)">
         <BodyContent>
             <p style="font-size: 16px;">
@@ -23,36 +23,36 @@
     </Dialog>
     @foreach (var app in appLists)
     {
-        <div class="app-data-container px-2 py-2" @onclick="() => NavigateToNotification(app.PackageName, app.AppName)">
-            <div class="list-header-content">
+                <div class="app-data-container px-2 py-2" @onclick="() => NavigateToNotification(app.PackageName, app.AppName)">
+                    <div class="list-header-content">
                 @if (showSelectCheckbox)
                 {
                     @if (selectAllCheckbox)
                     {
-                        <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => appSelected(app.PackageName, (bool)args.Value)" checked />
+                                                <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => appSelected(app.PackageName, (bool)args.Value)" checked />
                     }
                     else
                     {
-                        <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => appSelected(app.PackageName, (bool)args.Value)" />
+                                                <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => appSelected(app.PackageName, (bool)args.Value)" />
                     }
                 }
-                <div class="app-icon">
+                        <div class="app-icon">
                     @if (app.AppLogo != null)
                     {
-                        <img src="@app.AppLogo" />
+                                        <img src="@app.AppLogo" />
                     }
                     else
                     {
-                        <img src="default_icon_2.png" />
+                                        <img src="default_icon_2.png" />
                     }
+                        </div>
+                    </div>
+                    <div class="list-content">
+                        <div class="app-name">@app.AppName</div>
+                        <div class="notification-count">@app.Count</div>
+                    </div>
                 </div>
-            </div>
-            <div class="list-content">
-                <div class="app-name">@app.AppName</div>
-                <div class="notification-count">@app.Count</div>
-            </div>
-        </div>
-        <hr style="width:100%;text-align:center;color:silver;">
+                <hr style="width:100%;text-align:center;color:silver;">
     }
 
     <PageStyle CurrentPage="@Page.Home" StyleFormat="StyleFormat.Format1"/>
@@ -74,7 +74,7 @@
         appLists = await _applicationRepository.GetAllApplicationAsync();
     }
 
-    private async Task RefreshPage() 
+    private async Task RefreshPage()
     {
         appLists = await _applicationRepository.GetAllApplicationAsync();
     }
@@ -121,7 +121,7 @@
 
     private void NavigateToNotification(string package, string appName)
     {
-        if(!showSelectCheckbox)
+        if (!showSelectCheckbox)
         {
             NavigationManager.NavigateTo($"/notification/{package}/{appName}");
         }

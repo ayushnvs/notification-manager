@@ -20,29 +20,34 @@
         else
         {
             <img class="nm-icon px-2" src="svg/search-svgrepo-com.svg" />
-            <img class="nm-icon px-2" src="svg/refresh-2-svgrepo-com.svg" @onclick="RefreshClick"/>
+            <img class="nm-icon px-2" src="svg/refresh-2-svgrepo-com.svg" @onclick="RefreshClick" />
             <img class="nm-icon px-2" src="svg/select-multiple-svgrepo-com.svg" @onclick="SelectMultipleClick" />
         }
     </div>
 </div>
 
 <style>
-    .title-bar, .page-title, .page-actions {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    .title-bar,
+    .page-title,
+    .page-actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 5px;
     }
 
     .title-bar {
-    height: 50px;
-    padding: 0px 10px;
-    background-color: #f6f6f6;
+        height: 4.5em;
+        padding: 0px 10px;
+        background-color: #f6f6f6;
+        position: fixed;
+        width: 100%;
     }
 
     .page-title {
-    font-weight: 600;
-    font-size: 20px;
+        font-weight: 600;
+        font-size: 20px;
     }
 </style>
 

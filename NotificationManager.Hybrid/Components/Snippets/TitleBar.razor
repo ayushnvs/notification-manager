@@ -3,12 +3,12 @@
     <div class="page-title">
         @if (showBackOnSelectClick)
         {
-            <img class="nm-icon px-2" src="svg/back-svgrepo-com.svg" @onclick="BackClick" />
+            <img class="nm-icon px-2" src="icon/icons8-back-48.png" @onclick="BackClick" />
             <div style="padding-left: 10px">Select Multiple</div>
         }
         else
         {
-            <img class="nm-icon px-2 @anbackgroundCSS" src="svg/hamburger-menu-svgrepo-com.svg"
+            <img class="nm-icon px-2 @anbackgroundCSS" src="icon/icons8-menu-48.png"
                 @onclick="ToggleBackgroundColor" />
             <div style="padding-left: 10px">@PageTitle</div>
         }
@@ -17,13 +17,13 @@
         @if (showBackOnSelectClick)
         {
             <input type="checkbox" class="select-checkbox" style="padding-right:10px;" @onchange="SelectAllClick" />
-            <img class="nm-icon px-3" src="svg/bin-svgrepo-com.svg" @onclick="DeleteClick" />
+            <img class="nm-icon px-3" src="icon/icons8-trash-can-48.png" @onclick="DeleteClick" />
         }
         else
         {
-            <img class="nm-icon px-2 @anbackgroundCSS" src="svg/search-svgrepo-com.svg" @onclick="ToggleBackgroundColor" />
-            <img class="nm-icon px-2" src="svg/refresh-2-svgrepo-com.svg" @onclick="RefreshClick" />
-            <img class="nm-icon px-2" src="svg/select-multiple-svgrepo-com.svg" @onclick="SelectMultipleClick" />
+            <img class="nm-icon px-2 @anbackgroundCSS" src="icon/icons8-search-50.png" @onclick="ToggleBackgroundColor" />
+            <img class="nm-icon px-2" src="icon/icons8-refresh-60.png" @onclick="RefreshClick" />
+            <img class="nm-icon px-2" src="icon/icons8-check-all-80.png" @onclick="SelectMultipleClick" />
         }
     </div>
 </div>

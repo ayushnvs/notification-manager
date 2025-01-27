@@ -37,6 +37,17 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+        <PublishAot>True</PublishAot>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
+      <RunAOTCompilation>True</RunAOTCompilation>
+      <AndroidEnableProfiledAot>False</AndroidEnableProfiledAot>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
+      <RunAOTCompilation>True</RunAOTCompilation>
+      <AndroidEnableProfiledAot>False</AndroidEnableProfiledAot>
     </PropertyGroup>
 
     <ItemGroup>
@@ -68,15 +79,16 @@
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
+        <PackageReference Include="System.Formats.Nrbf" Version="9.0.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\svg\" />
+      <MauiImage Include="wwwroot\icon\default_icon.png" />
+      <MauiImage Include="wwwroot\icon\default_icon_2.png" />
     </ItemGroup>
 
     <ItemGroup>
-      <MauiImage Include="wwwroot\image\default_icon.png" />
-      <MauiImage Include="wwwroot\image\default_icon_2.png" />
+      <Folder Include="wwwroot\image\" />
     </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@
 
 <TitleBar @ref="titleBar" PageTitle="@AppName" OnSelectMultipleClick="ShowSelectAction" OnSelectAllItem="SelectAllApp" OnDeleteItem="ShowDeleteAlertBox" OnRefreshClick="RefreshPage" />
 
-<div class="cmp-element container" style="padding-top: 15px;">
+<div class="cmp-element container" style="margin-top: 4.5em;padding-top: 15px;">
     <Dialog Title="Delete Alert!" Opened="showDeleteAlert" CloseButtonClicked="@(() => showDeleteAlert = false)">
         <BodyContent>
             <p style="font-size: 16px;">
@@ -35,16 +35,18 @@
                             <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => itemSelected(notification.Id, (bool)args.Value)" />
                         }
                     }
-                    <div class="app-icon">
-                        @if (notification.Application.Icon != null)
-                        {
-                            <img src="@($"data:image /jpeg;base64,{Convert.ToBase64String(notification.Application.Icon)}")" />
-                        }
-                        else
-                        {
-                            <img src="default_icon_2.png" />
-                        }
-                    </div>
+                    else {
+                        <div class="app-icon">
+                            @if (notification.Application.Icon != null)
+                            {
+                                <img src="@($"data:image /jpeg;base64,{Convert.ToBase64String(notification.Application.Icon)}")" />
+                            }
+                            else
+                            {
+                                <img src="icon/default_icon.png" alt="" />
+                            }
+                        </div>
+                    }
                     <div class="notif-title">@notification.NotificationTitle</div>
                 </div>
                 <div class="notif-time">

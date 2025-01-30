@@ -8,8 +8,7 @@
         }
         else
         {
-            <img class="nm-icon px-2 @anbackgroundCSS" src="icon/icons8-menu-48.png"
-                @onclick="ToggleBackgroundColor" />
+            <img class="nm-icon px-2" src="icon/icons8-menu-48.png" />
             <div style="padding-left: 10px">@PageTitle</div>
         }
     </div>
@@ -21,7 +20,7 @@
         }
         else
         {
-            <img class="nm-icon px-2 @anbackgroundCSS" src="icon/icons8-search-50.png" @onclick="ToggleBackgroundColor" />
+            <img class="nm-icon px-2" src="icon/icons8-search-50.png" />
             <img class="nm-icon px-2" src="icon/icons8-refresh-60.png" @onclick="RefreshClick" />
             <img class="nm-icon px-2" src="icon/icons8-check-all-80.png" @onclick="SelectMultipleClick" />
         }
@@ -95,17 +94,5 @@
     private async void DeleteClick()
     {
         await OnDeleteItem.InvokeAsync();
-    }
-
-    private void Toggle()
-    {
-        anbackgroundCSS = anbackgroundCSS == "light-gray-bg" ? "" : "light-gray-bg";
-    }
-
-    private void ToggleBackgroundColor(MouseEventArgs e)
-    {
-        @* await JSRuntime.InvokeVoidAsync("toggleBackgroundColor", "light-gray-bg", e.ClientX, e.ClientY); *@
-
-        Helper.TimeFunction(Toggle, Toggle, 2000);
     }
 }

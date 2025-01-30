@@ -29,6 +29,11 @@ public class NotificationRepository : INotificationRepository
         return await _databaseContext.Notification.Where(i => i.Id == id).FirstOrDefaultAsync();
     }
 
+    public async Task<NotificationDBO?> GetNotificationAsync(int notificationId)
+    {
+        return await _databaseContext.Notification.Where(i => i.NotificationId == notificationId).FirstOrDefaultAsync();
+    }
+
     public async Task<int> SaveNotificationAsync(NotificationDBO item)
     {
         await _databaseContext.Notification.AddAsync(item);

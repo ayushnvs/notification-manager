@@ -1,10 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
-using Android.Content.PM;
 using Android.Service.Notification;
-using NotificationManager.Hybrid.Entities.Models;
-using NotificationManager.Hybrid.Platforms.Android.Helpers;
-using NotificationManager.Hybrid.Repository.Interfaces;
 
 namespace NotificationManager.Hybrid.Platforms.Android.Services;
 
@@ -12,15 +8,6 @@ namespace NotificationManager.Hybrid.Platforms.Android.Services;
 [IntentFilter(["android.service.notification.NotificationListenerService"])]
 public class NotificationBroadcasterService : NotificationListenerService
 {
-    private readonly INotificationRepository _notificationRepository;
-    private readonly IApplicationRepository _applicationRepository;
-
-    public NotificationBroadcasterService()
-    {
-        _notificationRepository = ServiceProvider.GetService<INotificationRepository>();
-        _applicationRepository = ServiceProvider.GetService<IApplicationRepository>();
-    }
-
     public override void OnNotificationPosted(StatusBarNotification? sbn)
     {
         base.OnNotificationPosted(sbn);

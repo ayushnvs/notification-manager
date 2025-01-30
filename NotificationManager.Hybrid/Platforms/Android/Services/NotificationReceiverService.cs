@@ -27,11 +27,13 @@ public class NotificationReceiverService : BroadcastReceiver
         ApplicationDBO newApplication = new ApplicationDBO();
         NotificationDBO notification = new NotificationDBO();
 
+        int notificationId = intent.GetIntExtra("notificationId", 0);
         string? title = intent.GetStringExtra("title");
         string? text = intent.GetStringExtra("text");
         long? timestamp = intent.GetLongExtra("timestamp", 0);
         string? packageName = intent.GetStringExtra("appName");
 
+        if (notificationId == 0) return;
         if (title == null && text == null) return;
         if (packageName == null) return;
 
@@ -86,8 +88,12 @@ public class NotificationReceiverService : BroadcastReceiver
         }
         else
         {
+            NotificationDBO? existingNotification = await _notificationRepository.GetNotificationAsync(notificationId);
+            if (existingNotification != null) return;
+
             notification = new NotificationDBO
             {
+                NotificationId = notificationId,
                 NotificationTitle = title,
                 NotificationText = text,
                 NotificationApp = packageName,

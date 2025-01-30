@@ -84,6 +84,7 @@
         isSelectClicked = false;
         showBackOnSelectClick = false;
         await OnSelectMultipleClick.InvokeAsync(false);
+        await OnSelectAllItem.InvokeAsync(false);
     }
 
     private async void SelectAllClick(ChangeEventArgs args)

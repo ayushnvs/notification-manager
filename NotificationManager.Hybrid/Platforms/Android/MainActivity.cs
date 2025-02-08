@@ -20,7 +20,7 @@ public class MainActivity : MauiAppCompatActivity
         else StartService(new Intent(this, typeof(NotificationBroadcasterService)));
 
         NotificationReceiverService notificationReceiver = new NotificationReceiverService();
-        IntentFilter intent = new IntentFilter("intentNotificationRecieved");
+        IntentFilter intent = new IntentFilter("com.mycompany.myapp.notificationreceiver");
         //Activity? currentActivity = Platform.CurrentActivity;
         //currentActivity.RegisterReceiver(notificationReceiver, intent, (ActivityFlags)ReceiverFlags.NotExported);
         RegisterReceiver(notificationReceiver, intent);

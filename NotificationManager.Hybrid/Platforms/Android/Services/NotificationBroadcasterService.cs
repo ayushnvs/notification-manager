@@ -13,21 +13,25 @@ public class NotificationBroadcasterService : NotificationListenerService
         base.OnNotificationPosted(sbn);
         if (sbn == null) return;
 
+        bool isDismissable = sbn.IsClearable;
+
         int notificationId = sbn.Id;
         string? title = sbn.Notification?.Extras?.GetString(Notification.ExtraTitle);
         string? text = sbn.Notification?.Extras?.GetString(Notification.ExtraText);
         long timestamp = sbn.PostTime;
         string? appName = sbn.PackageName;
 
+        // If package name is null, then return
         if (appName == null) return;
 
-        Intent intent = new Intent("intentNotificationRecieved");
+        Intent intent = new Intent("com.mycompany.myapp.notificationreceiver");
 
         intent.PutExtra("notificationId", notificationId);
         intent.PutExtra("title", title);
         intent.PutExtra("text", text);
         intent.PutExtra("timestamp", timestamp);
         intent.PutExtra("appName", appName);
+        intent.PutExtra("isDismissable", isDismissable);
 
         SendBroadcast(intent);
     }

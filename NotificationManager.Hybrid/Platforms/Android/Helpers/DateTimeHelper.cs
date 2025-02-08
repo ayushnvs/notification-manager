@@ -11,6 +11,6 @@ public class DateTimeHelper
     public static DateTime FromTimestamp(long timestamp)
     {
         DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeMilliseconds(timestamp);
-        return dateTimeOffset.DateTime;
+        return dateTimeOffset.LocalDateTime;
     }
 }

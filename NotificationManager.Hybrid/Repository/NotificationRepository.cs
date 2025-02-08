@@ -29,6 +29,20 @@ public class NotificationRepository : INotificationRepository
         return await _databaseContext.Notification.Where(i => i.Id == id).FirstOrDefaultAsync();
     }
 
+    public async Task<NotificationDBO?> GetNotificationAsync(string packageName, int notificationId)
+    {
+        return await _databaseContext.Notification.Where(i => i.NotificationApp == packageName && i.NotificationId == notificationId).FirstOrDefaultAsync();
+    }
+
+    public async Task<List<NotificationDBO>> GetNotificationsAsync(string packageName, DateTime date1, DateTime date2)
+    {
+        return await _databaseContext.Notification.Include(notif => notif.Application).Where(notif => 
+            notif.NotificationApp == packageName && 
+            notif.RecievedOn >= date2 && 
+            notif.RecievedOn <= date1
+        ).ToListAsync();
+    }
+
     public async Task<int> SaveNotificationAsync(NotificationDBO item)
     {
         await _databaseContext.Notification.AddAsync(item);

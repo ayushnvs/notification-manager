@@ -18,6 +18,9 @@ public class NotificationDBO
     [Column("notif_app")]
     public string? NotificationApp { get; set; }
 
+    [Column("notification_id")]
+    public int NotificationId { get; set; }
+
     [Column("notif_link")]
     public string? NotificationLink { get; set; }
 

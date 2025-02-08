@@ -9,4 +9,5 @@ public interface INotificationService
     Task DeleteAllNotification(List<string> packages);
     Task DeleteNotificationAsync(Guid id);
     Task DeleteNotificationAsync(List<Guid> idList);
+    Task<bool> CheckDuplicateNotificationAsync(NotificationDBO notification);
 }

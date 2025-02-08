@@ -18,6 +18,29 @@ public class NotificationService : INotificationService
         return await _notificationRepository.GetNotificationsAsync(packageName);
     }
 
+    public async Task<bool> CheckDuplicateNotificationAsync(NotificationDBO notification)
+    {
+        int debouncingPeriod = 1500;
+        bool isDuplicate = false;
+
+        List<NotificationDBO> notifsList = await _notificationRepository.GetNotificationsAsync(notification.NotificationApp, notification.RecievedOn, notification.RecievedOn.Subtract(TimeSpan.FromMilliseconds(debouncingPeriod)));
+
+        if (notifsList.Count > 0)
+        {
+            foreach (NotificationDBO notif in notifsList)
+            {
+                if (notif.NotificationTitle == notification.NotificationTitle && notif.NotificationText == notification.NotificationText)
+                {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+        }
+
+        if (isDuplicate) return true;
+        else return false;
+    }
+
     public async Task DeleteAllNotification(string package)
     {
         await _notificationRepository.DeleteNotificationAsync(package);

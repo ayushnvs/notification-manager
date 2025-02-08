@@ -19,4 +19,7 @@ public class SettingsDBO : BaseDBO
 
     [Column("style_format")]
     public StyleFormat StyleFormat { get; set; }
+
+    [Column("debouncing_period")]
+    public int DebouncingPeriod { get; set; }
 }

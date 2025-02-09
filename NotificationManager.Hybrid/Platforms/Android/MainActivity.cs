@@ -17,17 +17,22 @@ public class MainActivity : MauiAppCompatActivity
         base.OnCreate(savedInstanceState);
 
         if (!IsNotificationListenerServiceEnabled()) RequestNotificationListenerPermission();
-        else StartService(new Intent(this, typeof(NotificationBroadcasterService)));
-
-        NotificationReceiverService notificationReceiver = new NotificationReceiverService();
-        IntentFilter intent = new IntentFilter("com.mycompany.myapp.notificationreceiver");
-        //Activity? currentActivity = Platform.CurrentActivity;
-        //currentActivity.RegisterReceiver(notificationReceiver, intent, (ActivityFlags)ReceiverFlags.NotExported);
-        RegisterReceiver(notificationReceiver, intent);
+        else
+        {
+            bool isServiceRunning = IsServiceRunning(this, typeof(NotificationBroadcasterService));
+            if (!isServiceRunning)
+            {
+                StartService(new Intent(this, typeof(NotificationBroadcasterService)));
+                RegisterNotificationReceiver();
+            };
+        }
     }
 
     private void RequestNotificationListenerPermission()
     {
+        // Register Notification Receiver
+        RegisterNotificationReceiver();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.SetTitle("Permission Required");
         builder.SetMessage("Please enable notification listener access for this app.");
@@ -58,5 +63,26 @@ public class MainActivity : MauiAppCompatActivity
         }
 
         return false;
+    }
+
+    public bool IsServiceRunning(Context context, Type serviceClass)
+    {
+        ActivityManager activityManager = (ActivityManager)context.GetSystemService(ActivityService);
+        IList<ActivityManager.RunningServiceInfo> runningServices = activityManager.GetRunningServices(100);
+
+        foreach (ActivityManager.RunningServiceInfo service in runningServices)
+        {
+            if (service.Service?.ClassName == serviceClass.FullName) return true;
+        }
+
+        return false;
+    }
+
+    private void RegisterNotificationReceiver()
+    {
+        NotificationReceiverService notificationReceiver = new NotificationReceiverService();
+        IntentFilter intent = new IntentFilter("com.mycompany.myapp.notificationreceiver");
+
+        RegisterReceiver(notificationReceiver, intent);
     }
 }

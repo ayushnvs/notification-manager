@@ -4,7 +4,7 @@ using Android.Service.Notification;
 
 namespace NotificationManager.Hybrid.Platforms.Android.Services;
 
-[Service(Name = "NotificationManager.Platforms.Android.Services.NotificationBroadcasterService", Enabled = true, Exported = false, Permission = "android.permission.BIND_NOTIFICATION_LISTENER_SERVICE")]
+[Service(Name = "NotificationManager.Hybrid.Platforms.Android.Services.NotificationBroadcasterService", Enabled = true, Exported = false, Permission = "android.permission.BIND_NOTIFICATION_LISTENER_SERVICE")]
 [IntentFilter(["android.service.notification.NotificationListenerService"])]
 public class NotificationBroadcasterService : NotificationListenerService
 {

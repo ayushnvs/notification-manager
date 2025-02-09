@@ -17,13 +17,11 @@ public class MainActivity : MauiAppCompatActivity
         base.OnCreate(savedInstanceState);
 
         if (!IsNotificationListenerServiceEnabled()) RequestNotificationListenerPermission();
-        else StartService(new Intent(this, typeof(NotificationBroadcasterService)));
-
-        NotificationReceiverService notificationReceiver = new NotificationReceiverService();
-        IntentFilter intent = new IntentFilter("com.mycompany.myapp.notificationreceiver");
-        //Activity? currentActivity = Platform.CurrentActivity;
-        //currentActivity.RegisterReceiver(notificationReceiver, intent, (ActivityFlags)ReceiverFlags.NotExported);
-        RegisterReceiver(notificationReceiver, intent);
+        else
+        {
+            bool isServiceRunning = IsServiceRunning(this, typeof(NotificationBroadcasterService));
+            if (!isServiceRunning) StartService(new Intent(this, typeof(NotificationBroadcasterService)));
+        }
     }
 
     private void RequestNotificationListenerPermission()
@@ -55,6 +53,20 @@ public class MainActivity : MauiAppCompatActivity
         {
             ComponentName? componentName = ComponentName.UnflattenFromString(name);
             if (componentName != null && TextUtils.Equals(packageName, componentName.PackageName)) return true;
+        }
+
+        return false;
+    }
+
+    public bool IsServiceRunning(Context context, Type serviceClass)
+    {
+        ActivityManager activityManager = (ActivityManager)context.GetSystemService(ActivityService);
+
+        IList<ActivityManager.RunningServiceInfo> runningServices = activityManager.GetRunningServices(100);
+
+        foreach (ActivityManager.RunningServiceInfo service in runningServices)
+        {
+            if (service.Service?.ClassName == serviceClass.FullName) return true;
         }
 
         return false;

@@ -20,19 +20,12 @@ public class MainActivity : MauiAppCompatActivity
         else
         {
             bool isServiceRunning = IsServiceRunning(this, typeof(NotificationBroadcasterService));
-            if (!isServiceRunning)
-            {
-                StartService(new Intent(this, typeof(NotificationBroadcasterService)));
-                RegisterNotificationReceiver();
-            };
+            if (!isServiceRunning) StartService(new Intent(this, typeof(NotificationBroadcasterService)));
         }
     }
 
     private void RequestNotificationListenerPermission()
     {
-        // Register Notification Receiver
-        RegisterNotificationReceiver();
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.SetTitle("Permission Required");
         builder.SetMessage("Please enable notification listener access for this app.");
@@ -76,13 +69,5 @@ public class MainActivity : MauiAppCompatActivity
         }
 
         return false;
-    }
-
-    private void RegisterNotificationReceiver()
-    {
-        NotificationReceiverService notificationReceiver = new NotificationReceiverService();
-        IntentFilter intent = new IntentFilter("com.mycompany.myapp.notificationreceiver");
-
-        RegisterReceiver(notificationReceiver, intent);
     }
 }

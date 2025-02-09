@@ -8,6 +8,16 @@ namespace NotificationManager.Hybrid.Platforms.Android.Services;
 [IntentFilter(["android.service.notification.NotificationListenerService"])]
 public class NotificationBroadcasterService : NotificationListenerService
 {
+    public override void OnCreate()
+    {
+        base.OnCreate();
+
+        NotificationReceiverService notificationReceiver = new NotificationReceiverService();
+        IntentFilter intent = new IntentFilter("com.mycompany.myapp.notificationreceiver");
+
+        RegisterReceiver(notificationReceiver, intent);
+    }
+
     public override void OnNotificationPosted(StatusBarNotification? sbn)
     {
         base.OnNotificationPosted(sbn);

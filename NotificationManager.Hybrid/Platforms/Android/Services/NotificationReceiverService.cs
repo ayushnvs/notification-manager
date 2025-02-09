@@ -9,7 +9,7 @@ using NotificationManager.Hybrid.Service.Interface;
 
 namespace NotificationManager.Hybrid.Platforms.Android.Services;
 
-[BroadcastReceiver(Enabled = true, Permission = "android.Manifest.Permission.RECEIVE_BOOT_COMPLETED")]
+[BroadcastReceiver(Enabled = true, Exported = true, Permission = "android.Manifest.Permission.RECEIVE_BOOT_COMPLETED")]
 [IntentFilter(["com.mycompany.myapp.notificationreceiver"])]
 public class NotificationReceiverService : BroadcastReceiver
 {
@@ -61,7 +61,7 @@ public class NotificationReceiverService : BroadcastReceiver
             RecievedOn = DateTimeHelper.FromTimestamp(timestamp.Value)
         };
 
-        if(application != null)
+        if (application != null)
         {
             // Check if it is duplicate notification
             bool isDuplicate = await _notificationService.CheckDuplicateNotificationAsync(notification);

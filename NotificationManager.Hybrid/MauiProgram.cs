@@ -4,6 +4,7 @@ using NotificationManager.Hybrid.Service;
 using NotificationManager.Hybrid.Service.Interface;
 using NotificationManager.Hybrid.Repository;
 using NotificationManager.Hybrid.Repository.Interfaces;
+using Serilog;
 
 namespace NotificationManager.Hybrid;
 
@@ -21,12 +22,28 @@ public static class MauiProgram
 
         builder.Services.AddMauiBlazorWebView();
 
+        // Get download directory path
+#if __ANDROID__
+
+        string logFilePath = Android.App.Application.Context.GetExternalFilesDir(Android.OS.Environment.DirectoryDownloads).AbsoluteFile.Path.ToString();
+        builder.Services.AddSerilog
+            (
+                new LoggerConfiguration()
+                    .MinimumLevel.Information()
+                    .WriteTo.Debug()
+                    .WriteTo.File(Path.Combine(logFilePath, "log.txt"), rollingInterval: RollingInterval.Day)
+                    .CreateLogger()
+            );
+#endif
+
+
+
 #if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
+        builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
         builder.Services.AddDbContext<DatabaseContext>();
-        var dbContext = new DatabaseContext();
+        DatabaseContext dbContext = new DatabaseContext();
         dbContext.Database.EnsureCreated();
         dbContext.Dispose();
 

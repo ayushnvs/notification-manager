@@ -30,49 +30,55 @@ public class NotificationReceiverService : BroadcastReceiver
     public async override void OnReceive(Context? context, Intent? intent)
     {
         if (intent == null) return;
-
-        // Retrieve notification data from the intent
-        int notificationId = intent.GetIntExtra("notificationId", 0);
-        string? title = intent.GetStringExtra("title");
-        string? text = intent.GetStringExtra("text");
-        long? timestamp = intent.GetLongExtra("timestamp", 0);
-        string? packageName = intent.GetStringExtra("appName");
-        bool? isDismissable = intent.GetBooleanExtra("isDismissable", true);
-
-        if (title == null && text == null) return;
-        if (packageName == null) return;
-
-        Guid? applicationId = null;
-        ApplicationDBO? application = await _applicationRepository.GetApplicationAsync(packageName);
-
-        if (application != null) applicationId = application.Id;
-        else applicationId = await CreateApplicationRecord(context, packageName);
-
-        if (isDismissable == false)
+        try
         {
-            NotificationDBO? duplicateNotification = await _notificationRepository.GetNotificationAsync(packageName, notificationId);
-            if (duplicateNotification != null) return;
+            // Retrieve notification data from the intent
+            int notificationId = intent.GetIntExtra("notificationId", 0);
+            string? title = intent.GetStringExtra("title");
+            string? text = intent.GetStringExtra("text");
+            long? timestamp = intent.GetLongExtra("timestamp", 0);
+            string? packageName = intent.GetStringExtra("appName");
+            bool? isDismissable = intent.GetBooleanExtra("isDismissable", false);
+
+            if (title == null && text == null) return;
+            if (packageName == null) return;
+
+            Guid? applicationId = null;
+            ApplicationDBO? application = await _applicationRepository.GetApplicationAsync(packageName);
+
+            if (application != null) applicationId = application.Id;
+            else applicationId = await CreateApplicationRecord(context, packageName);
+
+            if (isDismissable == false)
+            {
+                NotificationDBO? duplicateNotification = await _notificationRepository.GetNotificationAsync(packageName, notificationId);
+                if (duplicateNotification != null) return;
+            }
+
+            NotificationDBO notification = new NotificationDBO()
+            {
+                NotificationId = notificationId,
+                NotificationTitle = title,
+                NotificationText = text,
+                NotificationApp = packageName,
+                ApplicationId = applicationId.Value,
+                RecievedOn = DateTimeHelper.FromTimestamp(timestamp.Value)
+            };
+
+            if (application != null)
+            {
+                // Check if it is duplicate notification
+                bool isDuplicate = await _notificationService.CheckDuplicateNotificationAsync(notification);
+                if (isDuplicate) return;
+            }
+
+            _logger.LogInformation($"Notification created for {packageName}");
+            await _notificationRepository.SaveNotificationAsync(notification);
         }
-
-        NotificationDBO notification = new NotificationDBO()
+        catch (Exception ex)
         {
-            NotificationId = notificationId,
-            NotificationTitle = title,
-            NotificationText = text,
-            NotificationApp = packageName,
-            ApplicationId = applicationId.Value,
-            RecievedOn = DateTimeHelper.FromTimestamp(timestamp.Value)
-        };
-
-        if (application != null)
-        {
-            // Check if it is duplicate notification
-            bool isDuplicate = await _notificationService.CheckDuplicateNotificationAsync(notification);
-            if (isDuplicate) return;
+            _logger.LogError(ex, "Error in OnReceive");
         }
-
-        _logger.LogInformation($"Notification created for {packageName}");
-        await _notificationRepository.SaveNotificationAsync(notification);
     }
     
     private async Task<Guid?> CreateApplicationRecord(Context? context, string? packageName)
@@ -87,7 +93,7 @@ public class NotificationReceiverService : BroadcastReceiver
         }
         catch (PackageManager.NameNotFoundException)
         {
-            //TODO: Handle missed notification due to null ApplicationInfo
+            _logger.LogInformation($"Application record for {packageName} not found in package manager");
             return null;
         }
 

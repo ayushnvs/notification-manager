@@ -6,6 +6,9 @@
 # Private projects
 /NotificationManager9.0
 
+# developer specified files
+[Cc]md.md
+
 # User-specific files
 *.rsuser
 *.suo

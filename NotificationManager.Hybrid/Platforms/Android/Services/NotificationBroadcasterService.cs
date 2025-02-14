@@ -29,32 +29,39 @@ public class NotificationBroadcasterService : NotificationListenerService
     public override void OnNotificationPosted(StatusBarNotification? sbn)
     {
         base.OnNotificationPosted(sbn);
-        if (sbn == null) return;
+        try
+        {
+            if (sbn == null) return;
 
-        bool isDismissable = sbn.IsClearable;
+            bool isDismissable = sbn.IsClearable;
 
-        if (!isDismissable) return;
+            if (!isDismissable) return;
 
-        int notificationId = sbn.Id;
-        string? title = sbn.Notification?.Extras?.GetString(Notification.ExtraTitle);
-        string? text = sbn.Notification?.Extras?.GetString(Notification.ExtraText);
-        long timestamp = sbn.PostTime;
-        string? appName = sbn.PackageName;
+            int notificationId = sbn.Id;
+            string? title = sbn.Notification?.Extras?.GetString(Notification.ExtraTitle);
+            string? text = sbn.Notification?.Extras?.GetString(Notification.ExtraText);
+            long timestamp = sbn.PostTime;
+            string? appName = sbn.PackageName;
 
-        // If package name is null, then return
-        if (appName == null) return;
+            // If package name is null, then return
+            if (appName == null) return;
 
-        _logger.LogInformation($"Notification received from {appName}");
+            _logger.LogInformation($"Notification received from {appName}");
 
-        Intent intent = new Intent("com.mycompany.myapp.notificationreceiver");
+            Intent intent = new Intent("com.mycompany.myapp.notificationreceiver");
 
-        intent.PutExtra("notificationId", notificationId);
-        intent.PutExtra("title", title);
-        intent.PutExtra("text", text);
-        intent.PutExtra("timestamp", timestamp);
-        intent.PutExtra("appName", appName);
-        intent.PutExtra("isDismissable", isDismissable);
+            intent.PutExtra("notificationId", notificationId);
+            intent.PutExtra("title", title);
+            intent.PutExtra("text", text);
+            intent.PutExtra("timestamp", timestamp);
+            intent.PutExtra("appName", appName);
+            intent.PutExtra("isDismissable", isDismissable);
 
-        SendBroadcast(intent);
+            SendBroadcast(intent);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error in OnNotificationPosted");
+        }
     }
 }

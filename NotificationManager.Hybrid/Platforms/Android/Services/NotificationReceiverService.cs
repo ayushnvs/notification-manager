@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
+using Microsoft.Extensions.Logging;
 using NotificationManager.Hybrid.Entities.Models;
 using NotificationManager.Hybrid.Platforms.Android.Helpers;
 using NotificationManager.Hybrid.Repository.Interfaces;
@@ -16,12 +17,14 @@ public class NotificationReceiverService : BroadcastReceiver
     private readonly INotificationRepository _notificationRepository;
     private readonly IApplicationRepository _applicationRepository;
     private readonly INotificationService _notificationService;
+    private readonly ILogger<NotificationReceiverService> _logger;
 
     public NotificationReceiverService()
     {
         _notificationRepository = ServiceProvider.GetService<INotificationRepository>();
         _applicationRepository = ServiceProvider.GetService<IApplicationRepository>();
         _notificationService = ServiceProvider.GetService<INotificationService>();
+        _logger = ServiceProvider.GetService<ILogger<NotificationReceiverService>>();
     }
 
     public async override void OnReceive(Context? context, Intent? intent)
@@ -68,6 +71,7 @@ public class NotificationReceiverService : BroadcastReceiver
             if (isDuplicate) return;
         }
 
+        _logger.LogInformation($"Notification created for {packageName}");
         await _notificationRepository.SaveNotificationAsync(notification);
     }
     
@@ -105,6 +109,7 @@ public class NotificationReceiverService : BroadcastReceiver
                 Icon = appLogo != null ? ImageHelper.DrawableToByteArray(appLogo) : null
             };
 
+            _logger.LogInformation($"Application record for {appName + ":" + packageName} created");
             await _applicationRepository.SaveApplicationAsync(newApplication);
 
             return newApplication.Id;

@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Service.Notification;
+using Microsoft.Extensions.Logging;
 
 namespace NotificationManager.Hybrid.Platforms.Android.Services;
 
@@ -8,6 +9,13 @@ namespace NotificationManager.Hybrid.Platforms.Android.Services;
 [IntentFilter(["android.service.notification.NotificationListenerService"])]
 public class NotificationBroadcasterService : NotificationListenerService
 {
+    private ILogger<NotificationBroadcasterService> _logger;
+
+    public NotificationBroadcasterService()
+    {
+        _logger = ServiceProvider.GetService<ILogger<NotificationBroadcasterService>>();
+    }
+
     public override void OnCreate()
     {
         base.OnCreate();
@@ -25,6 +33,8 @@ public class NotificationBroadcasterService : NotificationListenerService
 
         bool isDismissable = sbn.IsClearable;
 
+        if (!isDismissable) return;
+
         int notificationId = sbn.Id;
         string? title = sbn.Notification?.Extras?.GetString(Notification.ExtraTitle);
         string? text = sbn.Notification?.Extras?.GetString(Notification.ExtraText);
@@ -33,6 +43,8 @@ public class NotificationBroadcasterService : NotificationListenerService
 
         // If package name is null, then return
         if (appName == null) return;
+
+        _logger.LogInformation($"Notification received from {appName}");
 
         Intent intent = new Intent("com.mycompany.myapp.notificationreceiver");
 

@@ -22,6 +22,8 @@ public class MainActivity : MauiAppCompatActivity
             bool isServiceRunning = IsServiceRunning(this, typeof(NotificationBroadcasterService));
             if (!isServiceRunning) StartService(new Intent(this, typeof(NotificationBroadcasterService)));
         }
+
+        //PermissionStatus permissionStatus = await CheckAndRequestStoragePermission();
     }
 
     private void RequestNotificationListenerPermission()
@@ -69,5 +71,15 @@ public class MainActivity : MauiAppCompatActivity
         }
 
         return false;
+    }
+
+    public async Task<PermissionStatus> CheckAndRequestStoragePermission()
+    {
+        var status = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
+        if (status != PermissionStatus.Granted)
+        {
+            status = await Permissions.RequestAsync<Permissions.StorageWrite>();
+        }
+        return status;
     }
 }

@@ -21,6 +21,7 @@ public class NotificationRepository : INotificationRepository
         {
             query = query.Where(notif => notif.NotificationApp == packageName);
         }
+        query = query.OrderByDescending(notif => notif.RecievedOn);
         return await query.ToListAsync();
     }
 

@@ -12,7 +12,7 @@ namespace NotificationManager.Hybrid;
 [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
 public class MainActivity : MauiAppCompatActivity
 {
-    protected async override void OnCreate(Bundle? savedInstanceState)
+    protected override void OnCreate(Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
 
@@ -23,15 +23,7 @@ public class MainActivity : MauiAppCompatActivity
             if (!isServiceRunning) StartService(new Intent(this, typeof(NotificationBroadcasterService)));
         }
 
-        PermissionStatus permissionStatus = await CheckAndRequestStoragePermission();
-        if (permissionStatus == PermissionStatus.Granted)
-        {
-            // Proceed with writing to external storage
-        }
-        else
-        {
-            // Handle permission denial
-        }
+        //PermissionStatus permissionStatus = await CheckAndRequestStoragePermission();
     }
 
     private void RequestNotificationListenerPermission()

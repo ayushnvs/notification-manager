@@ -39,7 +39,7 @@ public class ApplicationRepository : IApplicationRepository
 
     public async Task<List<ApplicationViewDTO>> GetAllApplicationAsync()
     {
-        List<ApplicationDBO> applications = await _databaseContext.Application.ToListAsync();
+        List<ApplicationDBO> applications = await _databaseContext.Application.OrderByDescending(app => app.LastUpdated).ToListAsync();
 
         List<ApplicationViewDTO> appsViewList = new List<ApplicationViewDTO>();
         foreach (ApplicationDBO? app in applications)
@@ -59,5 +59,14 @@ public class ApplicationRepository : IApplicationRepository
         }
 
         return appsViewList;
+    }
+
+    public async Task UpdateApplicationAsync(Guid id, DateTime? lastUpdated)
+    {
+        ApplicationDBO? app = await GetApplicationAsync(id);
+        if (app == null) return;
+        app.LastUpdated = lastUpdated;
+        _databaseContext.Application.Update(app);
+        await _databaseContext.SaveChangesAsync();
     }
 }

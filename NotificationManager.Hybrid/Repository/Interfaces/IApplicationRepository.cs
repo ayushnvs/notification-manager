@@ -9,4 +9,5 @@ public interface IApplicationRepository
     Task<ApplicationDBO?> GetApplicationAsync(string packageName);
     Task<int> SaveApplicationAsync(ApplicationDBO app);
     Task<List<ApplicationViewDTO>> GetAllApplicationAsync();
+    Task UpdateApplicationAsync(Guid id, DateTime? lastUpdated);
 }

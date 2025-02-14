@@ -12,4 +12,7 @@ public class ApplicationDBO : BaseDBO
 
     [Column("icon")]
     public byte[]? Icon { get; set; }
+
+    [Column("last_updated")]
+    public DateTime? LastUpdated { get; set; }
 }

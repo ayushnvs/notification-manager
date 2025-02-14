@@ -74,6 +74,7 @@ public class NotificationReceiverService : BroadcastReceiver
 
             _logger.LogInformation($"Notification created for {packageName}");
             await _notificationRepository.SaveNotificationAsync(notification);
+            await _applicationRepository.UpdateApplicationAsync(applicationId.Value, notification.RecievedOn);
         }
         catch (Exception ex)
         {

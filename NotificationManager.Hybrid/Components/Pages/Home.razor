@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using CommunityToolkit.Maui.Alerts
 @using NotificationManager.Hybrid.Entities.DTO
 @using NotificationManager.Hybrid.Components.Snippets
 @using NotificationManager.Hybrid.Components.Style
@@ -23,36 +24,36 @@
     </Dialog>
     @foreach (var app in appLists)
     {
-                    <div class="app-data-container px-2 py-2" @onclick="() => NavigateToNotification(app.PackageName, app.AppName)">
-                        <div class="list-header-content">
+        <div class="app-data-container px-2 py-2" @onclick="() => NavigateToNotification(app.PackageName, app.AppName)">
+            <div class="list-header-content">
                 @if (showSelectCheckbox)
                 {
                     @if (selectAllCheckbox)
                     {
-                                    <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => appSelected(app.PackageName, (bool)args.Value)" checked />
+                        <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => appSelected(app.PackageName, (bool)args.Value)" checked />
                     }
                     else
                     {
-                                    <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => appSelected(app.PackageName, (bool)args.Value)" />
+                        <input type="checkbox" class="select-checkbox" @onchange="(ChangeEventArgs args) => appSelected(app.PackageName, (bool)args.Value)" />
                     }
                 }
-                            <div class="app-icon">
+                <div class="app-icon">
                     @if (app.AppLogo != null)
                     {
-                                <img src="@app.AppLogo" />
+                        <img src="@app.AppLogo" />
                     }
                     else
                     {
-                                <img src="default_icon_2.png" />
+                        <img src="default_icon_2.png" />
                     }
-                            </div>
-                        </div>
-                        <div class="list-content">
-                            <div class="app-name">@app.AppName</div>
-                            <div class="notification-count">@app.Count</div>
-                        </div>
-                    </div>
-                    <hr style="width:100%;text-align:center;color:silver;">
+                </div>
+            </div>
+            <div class="list-content">
+                <div class="app-name">@app.AppName</div>
+                <div class="notification-count">@app.Count</div>
+            </div>
+        </div>
+        <hr style="width:100%;text-align:center;color:silver;">
     }
 
     <PageStyle CurrentPage="@Page.Home" StyleFormat="StyleFormat.Format1"/>
@@ -66,8 +67,7 @@
     private bool reverseTitlebar { get; set; }
     private List<string> packageList = new List<string>();
     private TitleBar titleBar;
-    [Inject]
-    public NavigationManager NavigationManager { get; set; }
+    [Inject] public NavigationManager NavigationManager { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -103,7 +103,12 @@
 
     private void showDeleteAlertBox()
     {
-        showDeleteAlert = true;
+        if (packageList.Count == 0 && !selectAllCheckbox)
+        {
+            // Show Toast Notification
+            Toast.Make("No app is selected. Please select at least one app.").Show();
+        }
+        else showDeleteAlert = true;
     }
 
     private async void DeleteSelectedNotification()

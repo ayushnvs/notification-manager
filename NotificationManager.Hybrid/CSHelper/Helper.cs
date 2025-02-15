@@ -1,5 +1,3 @@
-using System;
-
 namespace NotificationManager.Hybrid.CSHelper;
 
 public class Helper

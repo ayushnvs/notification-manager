@@ -5,6 +5,7 @@ using NotificationManager.Hybrid.Service.Interface;
 using NotificationManager.Hybrid.Repository;
 using NotificationManager.Hybrid.Repository.Interfaces;
 using Serilog;
+using CommunityToolkit.Maui;
 
 namespace NotificationManager.Hybrid;
 
@@ -15,6 +16,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

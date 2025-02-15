@@ -1,4 +1,5 @@
 ﻿@page "/notification/{package}/{appname}"
+@using CommunityToolkit.Maui.Alerts
 @using NotificationManager.Hybrid.Components.Snippets
 @using NotificationManager.Hybrid.Components.Style
 @using NotificationManager.Hybrid.Service.Interface
@@ -109,7 +110,12 @@
 
     private void ShowDeleteAlertBox()
     {
-        showDeleteAlert = true;
+        if (notificationIdList.Count == 0 && !selectAllCheckbox)
+        {
+            // Show Toast Notification
+            Toast.Make("No notification is selected. Please select at least one notification.").Show();
+        }
+        else showDeleteAlert = true;
     }
 
     private async void DeleteSelectedNotification()

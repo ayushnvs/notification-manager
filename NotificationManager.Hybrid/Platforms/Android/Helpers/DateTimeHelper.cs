@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NotificationManager.Hybrid.Platforms.Android.Helpers;
+﻿namespace NotificationManager.Hybrid.Platforms.Android.Helpers;
 
 public class DateTimeHelper
 {

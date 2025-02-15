@@ -5,8 +5,9 @@ namespace NotificationManager.Hybrid.Platforms.Android.Helpers;
 
 public class ImageHelper
 {
-    public static byte[] DrawableToByteArray(Drawable drawable)
+    public static byte[]? DrawableToByteArray(Drawable drawable)
     {
+        if (drawable.IntrinsicWidth < 1 || drawable.IntrinsicHeight < 1) return null;
         Bitmap bitmap = Bitmap.CreateBitmap(drawable.IntrinsicWidth, drawable.IntrinsicHeight, Bitmap.Config.Argb8888);
         Canvas canvas = new Canvas(bitmap);
         drawable.SetBounds(0, 0, canvas.Width, canvas.Height);

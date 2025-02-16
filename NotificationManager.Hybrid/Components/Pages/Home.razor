@@ -8,7 +8,7 @@
 @inject IApplicationRepository _applicationRepository
 @inject INotificationService _notificationService
 
-<TitleBar @ref="titleBar" PageTitle="Application" OnSelectMultipleClick="selectAppAction" OnSelectAllItem="selectAllApp" OnDeleteItem="showDeleteAlertBox" OnRefreshClick="RefreshPage" />
+<TitleBar @ref="titleBar" PageTitle="Application" OnSelectMultipleClick="selectAppAction" OnSelectAllItem="selectAllApp" OnDeleteItem="showDeleteAlertBox" OnRefreshClick="RefreshPage" OnSearchClick="SearchApplications" />
 
 <div class="cmp-element container" style="margin-top: 4.5em; padding-top: 0.5em;">
     <Dialog Title="Delete Alert!" Opened="showDeleteAlert" CloseButtonClicked="@(() => showDeleteAlert = false)">
@@ -61,6 +61,7 @@
 
 @code {
     private List<ApplicationViewDTO> appLists { get; set; }
+    private string? searchText { get; set; }
     private bool showSelectCheckbox = false;
     private bool selectAllCheckbox = false;
     private bool showDeleteAlert = false;
@@ -72,6 +73,12 @@
     protected override async Task OnInitializedAsync()
     {
         appLists = await _applicationRepository.GetAllApplicationAsync();
+    }
+
+    private void SearchApplications() {
+        if (searchText != null)
+            // TODO: Implement Search Functionality for app name
+            appLists = appLists.Where(app => app.AppName.ToLower().Contains(searchText.ToLower())).ToList();
     }
 
     private async Task RefreshPage()

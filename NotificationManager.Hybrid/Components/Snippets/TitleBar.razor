@@ -20,7 +20,7 @@
         }
         else
         {
-            <img class="nm-icon px-2" src="icon/icons8-search-50.png" />
+            <img class="nm-icon px-2" src="icon/icons8-search-50.png" @onclick="SearchClick" />
             <img class="nm-icon px-2" src="icon/icons8-refresh-60.png" @onclick="RefreshClick" />
             <img class="nm-icon px-2" src="icon/icons8-check-all-80.png" @onclick="SelectMultipleClick" />
         }
@@ -62,11 +62,26 @@
     [Parameter] public EventCallback<bool> OnSelectAllItem { get; set; }
     [Parameter] public EventCallback OnDeleteItem { get; set; }
     [Parameter] public EventCallback OnRefreshClick { get; set; }
+    [Parameter] public EventCallback OnSearchClick { get; set; }
     [Inject] private IJSRuntime JSRuntime { get; set; }
     public bool isSelectClicked { get; set; } = false;
     public bool showBackOnSelectClick = false;
     public bool isSelectAllChecked = false;
     public string anbackgroundCSS = "";
+
+    public async void BackClick()
+    {
+        isSelectClicked = false;
+        showBackOnSelectClick = false;
+        await OnSelectMultipleClick.InvokeAsync(false);
+        await OnSelectAllItem.InvokeAsync(false);
+    }
+
+    public async void SearchClick()
+    {
+        // TODO: Implement UI for search functionality
+        await OnSearchClick.InvokeAsync();
+    }
 
     private async void RefreshClick()
     {
@@ -78,13 +93,6 @@
         isSelectClicked = true;
         showBackOnSelectClick = true;
         await OnSelectMultipleClick.InvokeAsync(true);
-    }
-    public async void BackClick()
-    {
-        isSelectClicked = false;
-        showBackOnSelectClick = false;
-        await OnSelectMultipleClick.InvokeAsync(false);
-        await OnSelectAllItem.InvokeAsync(false);
     }
 
     private async void SelectAllClick(ChangeEventArgs args)

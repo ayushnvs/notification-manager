@@ -9,52 +9,42 @@
         else
         {
             <img class="nm-icon px-2" src="icon/icons8-menu-48.png" />
-            <div style="padding-left: 10px">@PageTitle</div>
+            @if(!showSearchBar)
+            {
+                <div style="padding-left: 10px">@PageTitle</div>
+            }
         }
     </div>
     <div class="page-actions">
-        @if (showBackOnSelectClick)
+        @if (showSearchBar)
         {
-            <input type="checkbox" class="select-checkbox" style="padding-right:10px;" @onchange="SelectAllClick" />
-            <img class="nm-icon px-3" src="icon/icons8-trash-can-48.png" @onclick="DeleteClick" />
+            <input type="text" class="search-bar" placeholder="Search" />
+            <img class="nm-icon px-2" src="icon/icons8-close-48.png" @onclick="cancelSearch" />
         }
-        else
+        else 
         {
-            <img class="nm-icon px-2" src="icon/icons8-search-50.png" @onclick="SearchClick" />
-            <img class="nm-icon px-2" src="icon/icons8-refresh-60.png" @onclick="RefreshClick" />
-            <img class="nm-icon px-2" src="icon/icons8-check-all-80.png" @onclick="SelectMultipleClick" />
+            @if (showBackOnSelectClick)
+            {
+                <input type="checkbox" class="select-checkbox" style="padding-right:10px;" @onchange="SelectAllClick" />
+                <img class="nm-icon px-3" src="icon/icons8-trash-can-48.png" @onclick="DeleteClick" />
+            }
+            else
+            {
+                <img class="nm-icon px-2" src="icon/icons8-refresh-60.png" @onclick="RefreshClick" />
+                <img class="nm-icon px-2" src="icon/icons8-check-all-80.png" @onclick="SelectMultipleClick" />
+                <img class="nm-icon px-2" src="icon/icons8-search-50.png" @onclick="SearchClick" />
+            }
         }
     </div>
+    @if(showSearchBar) 
+    {
+        <style>
+            .page-actions {
+                width: 100%;
+            }
+        </style>
+    }
 </div>
-
-<style>
-    .title-bar,
-    .page-title,
-    .page-actions {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .title-bar {
-        height: 4.5em;
-        padding: 0px 10px;
-        background-color: #f6f6f6;
-        position: fixed;
-        width: 100%;
-    }
-
-    .page-title {
-        font-weight: 600;
-        font-size: 20px;
-    }
-
-    .light-gray-bg {
-        background-color: lightgray;
-    }
-</style>
 
 @code {
     [Parameter] public string PageTitle { get; set; } = "Home";
@@ -63,11 +53,12 @@
     [Parameter] public EventCallback OnDeleteItem { get; set; }
     [Parameter] public EventCallback OnRefreshClick { get; set; }
     [Parameter] public EventCallback OnSearchClick { get; set; }
+    [Parameter] public EventCallback OnCancelSearch { get; set; }
     [Inject] private IJSRuntime JSRuntime { get; set; }
     public bool isSelectClicked { get; set; } = false;
     public bool showBackOnSelectClick = false;
     public bool isSelectAllChecked = false;
-    public string anbackgroundCSS = "";
+    public bool showSearchBar = false;
 
     public async void BackClick()
     {
@@ -79,8 +70,14 @@
 
     public async void SearchClick()
     {
-        // TODO: Implement UI for search functionality
+        showSearchBar = true;
         await OnSearchClick.InvokeAsync();
+    }
+
+    public async void cancelSearch()
+    {
+        showSearchBar = false;
+        await OnCancelSearch.InvokeAsync();
     }
 
     private async void RefreshClick()

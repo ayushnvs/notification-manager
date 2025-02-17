@@ -24,3 +24,14 @@
 .light-gray-bg {
     background-color: lightgray;
 }
+
+.search-bar {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+    background-color: #f6f6f6;
+}
+
+.search-bar:focus {
+    border: none;
+}

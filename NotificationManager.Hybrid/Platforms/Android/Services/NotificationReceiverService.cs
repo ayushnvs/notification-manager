@@ -43,6 +43,8 @@ public class NotificationReceiverService : BroadcastReceiver
             if (title == null && text == null) return;
             if (packageName == null) return;
 
+            _logger.LogInformation($"Creating notification record for package: {packageName}...");
+
             Guid? applicationId = null;
             ApplicationDBO? application = await _applicationRepository.GetApplicationAsync(packageName);
 
@@ -65,12 +67,12 @@ public class NotificationReceiverService : BroadcastReceiver
                 RecievedOn = DateTimeHelper.FromTimestamp(timestamp.Value)
             };
 
-            if (application != null)
-            {
-                // Check if it is duplicate notification
-                bool isDuplicate = await _notificationService.CheckDuplicateNotificationAsync(notification);
-                if (isDuplicate) return;
-            }
+            //if (application != null)
+            //{
+            //    // Check if it is duplicate notification
+            //    bool isDuplicate = await _notificationService.CheckDuplicateNotificationAsync(notification);
+            //    if (isDuplicate) return;
+            //}
 
             _logger.LogInformation($"Notification created for {packageName}");
             await _notificationRepository.SaveNotificationAsync(notification);
@@ -90,6 +92,7 @@ public class NotificationReceiverService : BroadcastReceiver
         ApplicationInfo? applicationInfo = null;
         try
         {
+            _logger.LogInformation($"Fetching application info for {packageName}...");
             applicationInfo = packageManager.GetApplicationInfo(packageName, 0);
         }
         catch (PackageManager.NameNotFoundException)

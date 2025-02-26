@@ -1,3 +1,38 @@
-﻿body
-{
+﻿.title-bar,
+.page-title,
+.page-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+}
+
+.title-bar {
+    height: 4.5em;
+    padding: 0px 10px;
+    background-color: #f6f6f6;
+    position: fixed;
+    width: 100%;
+}
+
+.page-title {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.light-gray-bg {
+    background-color: lightgray;
+}
+
+.search-bar {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+    background-color: #f6f6f6;
+}
+
+.search-bar:focus {
+    border-bottom: 1px solid light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+    outline: none;
 }

@@ -40,7 +40,7 @@ public class NotificationReceiverService : BroadcastReceiver
             string? packageName = intent.GetStringExtra("appName");
             bool? isDismissable = intent.GetBooleanExtra("isDismissable", false);
 
-            if (title == null && text == null) return;
+            //if (title == null && text == null) return;
             if (packageName == null) return;
 
             _logger.LogInformation($"Creating notification record for package: {packageName}...");

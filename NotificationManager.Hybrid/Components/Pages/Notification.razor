@@ -6,7 +6,7 @@
 @using NotificationManager.Hybrid.Entities.Models
 @inject INotificationService _notificationService
 
-<TitleBar @ref="titleBar" PageTitle="@AppName" OnSelectMultipleClick="ShowSelectAction" OnSelectAllItem="SelectAllApp" OnDeleteItem="ShowDeleteAlertBox" OnRefreshClick="RefreshPage" />
+<TitleBar @ref="titleBar" PageTitle="@AppName" OnSelectMultipleClick="ShowSelectAction" OnSelectAllItem="SelectAllApp" OnDeleteItem="ShowDeleteAlertBox" OnRefreshClick="RefreshPage" OnSearchInput="SearchNotifications" OnCancelSearch="() => SearchNotifications(null)" />
 
 <div class="cmp-element container" style="margin-top: 4.5em;padding-top: 15px;">
     <Dialog Title="Delete Alert!" Opened="showDeleteAlert" CloseButtonClicked="@(() => showDeleteAlert = false)">
@@ -70,6 +70,7 @@
     [Parameter] public string Package { get; set; }
     [Parameter] public string AppName { get; set; } = "Notification";
     private List<NotificationDBO> notificationList { get; set; }
+    private List<NotificationDBO> notificationListCopy { get; set; }
     private List<Guid> notificationIdList = new List<Guid>();
     private bool showSelectCheckbox = false;
     private bool selectAllCheckbox = false;
@@ -79,11 +80,27 @@
     protected override async Task OnInitializedAsync()
     {
         notificationList = await _notificationService.GetNotificationsAsync(Package);
+        notificationListCopy = notificationList;
+    }
+
+    private void SearchNotifications(string searchText)
+    {
+        if (searchText != null && searchText != "")
+            // TODO: Implement Search Functionality for app name
+            notificationList = notificationListCopy.Where(
+                notif => {
+                    return notif.NotificationText.ToLower().Contains(searchText.ToLower()) || 
+                    notif.NotificationTitle.ToLower().Contains(searchText.ToLower());
+                }
+            ).ToList();
+        else
+            notificationList = notificationListCopy;
     }
 
     private async Task RefreshPage()
     {
         notificationList = await _notificationService.GetNotificationsAsync(Package);
+        notificationListCopy = notificationList;
     }
 
     private void itemSelected(Guid id, bool IsChecked)

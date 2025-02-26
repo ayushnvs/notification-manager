@@ -33,5 +33,6 @@
 }
 
 .search-bar:focus {
-    border: none;
+    border-bottom: 1px solid light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+    outline: none;
 }

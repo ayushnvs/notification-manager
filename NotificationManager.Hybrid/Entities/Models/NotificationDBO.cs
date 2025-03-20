@@ -16,7 +16,7 @@ public class NotificationDBO
     public string? NotificationText { get; set; }
 
     [Column("notif_app")]
-    public string? NotificationApp { get; set; }
+    public required string NotificationApp { get; set; }
 
     [Column("notification_id")]
     public int NotificationId { get; set; }

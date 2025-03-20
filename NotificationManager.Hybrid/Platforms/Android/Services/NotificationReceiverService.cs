@@ -67,12 +67,12 @@ public class NotificationReceiverService : BroadcastReceiver
                 RecievedOn = DateTimeHelper.FromTimestamp(timestamp.Value)
             };
 
-            //if (application != null)
-            //{
-            //    // Check if it is duplicate notification
-            //    bool isDuplicate = await _notificationService.CheckDuplicateNotificationAsync(notification);
-            //    if (isDuplicate) return;
-            //}
+            if (application != null)
+            {
+                // Check if it is duplicate notification
+                bool isDuplicate = await _notificationService.CheckDuplicateNotificationAsync(notification);
+                if (isDuplicate) return;
+            }
 
             _logger.LogInformation($"Notification created for {packageName}");
             await _notificationRepository.SaveNotificationAsync(notification);
@@ -86,6 +86,7 @@ public class NotificationReceiverService : BroadcastReceiver
     
     private async Task<Guid?> CreateApplicationRecord(Context? context, string? packageName)
     {
+        if (packageName == null) return null;
         PackageManager? packageManager = context?.PackageManager;
         if (packageManager == null) return null;
 

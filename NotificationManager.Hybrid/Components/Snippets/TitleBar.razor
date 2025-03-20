@@ -40,7 +40,7 @@
     {
         <style>
             .page-actions {
-                width: 100%;
+            width: 100%;
             }
         </style>
     }
@@ -54,7 +54,7 @@
     [Parameter] public EventCallback OnRefreshClick { get; set; }
     [Parameter] public EventCallback<string> OnSearchInput { get; set; }
     [Parameter] public EventCallback OnCancelSearch { get; set; }
-    [Inject] private IJSRuntime JSRuntime { get; set; }
+    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
     public bool isSelectClicked { get; set; } = false;
     public bool showBackOnSelectClick = false;
     public bool isSelectAllChecked = false;
@@ -68,7 +68,7 @@
         await OnSelectAllItem.InvokeAsync(false);
     }
 
-    public async void SearchClick()
+    public void SearchClick()
     {
         showSearchBar = true;
     }
@@ -81,7 +81,7 @@
 
     public async void HandleInput(ChangeEventArgs args)
     {
-        string searchText = args.Value.ToString() ?? string.Empty;
+        string searchText = args.Value?.ToString() ?? string.Empty;
         await OnSearchInput.InvokeAsync(searchText);
     }
 
@@ -99,7 +99,10 @@
 
     private async void SelectAllClick(ChangeEventArgs args)
     {
-        await OnSelectAllItem.InvokeAsync((bool)args.Value);
+        if (args.Value is bool isChecked)
+        {
+            await OnSelectAllItem.InvokeAsync(isChecked);
+        }
     }
 
     private async void DeleteClick()
